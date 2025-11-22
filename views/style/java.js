@@ -71,6 +71,8 @@ function addItemToCartUI(name, price, quantity) {
         const newQty = parseInt(existingItem.dataset.quantity) + quantity;
         existingItem.dataset.quantity = newQty;
         existingItem.querySelector('.item-quantity').textContent = `Quantity: ${newQty}`;
+        updateCartTotal();
+        saveCartToLocalStorage();
         return;
     }
 
@@ -172,6 +174,13 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     } catch (err) {
         console.error("Checkout error:", err);
         alert("Error connecting to server.");
+    }
+});
+
+
+// ================================
+// LOGIN FUNCTION (SEPARATED)
+// ================================
 async function submitx() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -180,7 +189,7 @@ async function submitx() {
     formData.append("email", email);
     formData.append("password", password);
 
-     if (!email) {
+    if (!email) {
         document.getElementById("emailError").textContent = "Email is required";
         return;
     }
@@ -199,7 +208,6 @@ async function submitx() {
         const data = await response.json();
 
         if (response.ok) {
-            // Login successful
             document.getElementById("userIcon").style.display = "block";
             document.getElementById("userName").innerText = data.user_name;
             const login_form = bootstrap.Modal.getInstance(document.getElementById('login'));
@@ -214,19 +222,22 @@ async function submitx() {
 }
 
 
-function go(){
+// ================================
+// GO TO MODIFY PAGE
+// ================================
+function go() {
     window.location.href = 'web.html?modify=true';
 }
 
-window.onload = function() {
+
+// ================================
+// PAGE LOAD
+// ================================
+window.addEventListener("load", () => {
+    loadCartFromStorage();
+
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('modify') === 'true') {
         document.getElementById('userIcon').style.display = 'block';
     }
 });
-
-
-// ================================
-// LOAD CART ON PAGE LOAD
-// ================================
-window.onload = loadCartFromStorage;
