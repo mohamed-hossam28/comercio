@@ -179,7 +179,7 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
 
 
 // ================================
-// LOGIN FUNCTION (SEPARATED)
+// LOGIN FUNCTION 
 // ================================
 async function submitx() {
     const email = document.getElementById("email").value;
