@@ -16,3 +16,10 @@ app.mount("/webfonts", StaticFiles(directory="views/webfonts"), name="webfonts")
 async def read_root():
     return FileResponse("views/Web.html")
 
+
+@app.get("/Register")
+async def read_registration():
+    return FileResponse("views/RegistrationForm.html")
+
+
+
