@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercio</title>
+    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Parisienne&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="x-icon" href="images/shop.png">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand logo" href="#">
+                <img class="fa-0x" src="images/logo.png" alt="" width="150px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main" aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="se">
+                <button class="btn btn-outline-success" type="submit" id="searchbn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <div class="collapse navbar-collapse" id="main">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="btn nav-link active" aria-current="page" href="#" id="home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#Clothes">Clothes</a></li>
+                            <li><a class="dropdown-item" href="#Electronic">Electronic</a></li>
+                            <li><a class="dropdown-item" href="#cosmetics">cosmetics</a></li>
+                        </ul>
+                    </li>
+                    <li> <div class="contact">
+                        <a class="btn nav-link" aria-current="page" href="#Contactuso" id="ContactUs" >Contact Us</a>
+                    </div>
+                    </li>
+                </ul>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
+                <button class="p-3" id="cart" onclick="display()"><i class="fa-solid fa-cart-shopping"></i></button>
+                <a  class="nav-link" href="#" id="userIcon" style="display:none;">
+                    <div class="icon">
+                    <div class="person">
+                    <i class="fa-regular fa-circle-user  fa-2x"></i>
+                    </div>
+                    <div class="name">Ahmed</div>
+                </div>
+                </a>
+                
+                </div>
+        </div>
+    </nav>
+
+    <!-- Cart Window -->
+    <div class="cart-window" id="cartWindow">
+        <div class="cart-window-header">
+            <div class="text-black" id="cartwindowheader" >
+            <span>Shopping Cart</span>
+            </div>
+            <button class="btn btn-sm btn-danger" onclick="toggleCartWindow()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="cart-window-body" id="cartItems"></div>
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cartTotal">$0.00</span>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" tabindex="-1" id="login">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="contain">
+                        <div class="yellow"></div>
+                        <div class="black">
+                            <div class="for">
+                                <div class="inputs">
+                                    <label class="labelem" for="email" >E-mail</label>
+                                    <input type="email">
+                                </div>
+                                <div class="inputs">
+                                    <label class="labelpas" for="password">Password</label>
+                                    <input type="password">
+                                </div>
+                                <div class="reg">
+                                    <p>Don't have an account? &nbsp;</p>
+                                    <a href="RegistrationForm.html" target="_blank">Sign up instead</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="submitx()" class="submit" id="Submitx">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="landing">
+        <div class="text-center text-white" id="textlanding">
+            <div class="title">
+            <div>
+            <h1 id="welcome" style="font-size: 6rem;">Welcome to</h1>
+        </div>
+        <div>
+            <h1 id="comer" style="font-size: 6rem;">Comercio</h1>
+        </div>
+    </div>
+            <h5 style="font-size: 2rem;">Your one-stop shop for everything!</h5>
+        </div>
+    
+
+    <main class="container mt-4">
+        <!-- Slider Section -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="images/category1.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/category2.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/category3.jpg" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </main>
+
+    </div>
+    
+   
+        <div class="container my-3 py-5" id="stickers">
+          <div class="row my-5">
+            <div class="col text-center">
+              <a href="#Clothes" class="categories-item">
+                <i class="fa-solid fa-shirt fa-5x pb-2"></i>
+                <h5>Clothes</h5>
+              </a>
+            </div>
+            <div class="col text-center">
+              <a href="#Electronic" class="categories-item">
+                <i class="fa-solid fa-mobile-screen-button fa-5x pb-2"></i>
+                <h5>Electronic</h5>
+              </a>
+            </div>
+            <div class="col text-center">
+              <a href="#cosmetics" class="categories-item">
+                <i class="fas fa-spa fa-5x pb-2"></i>
+                <h5>cosmetics</h5>
+              </a>
+            </div>
+          </div>
+        </div>
+      
+    
+</div>
+    </div>
+</div>
+
+    <div class="container mt-4">
+        <h1 id="Clothes">Clothes</h1>
+        <section class="categories mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/item1.jpg" alt="Item 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Coat</h5>
+                            <p class="card-text">$70.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Coat" data-price="70.00">Add to Cart</button>
+                    
+                            <div class="quantity-controls">
+                                <button id="down" class="btn btn-secondary decrease-quantity">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                                <button id="up" class="btn btn-secondary increase-quantity">
+                                    <i class="fa-solid fa-chevron-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/item2.jpg" alt="Item 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Jeans</h5>
+                            <p class="card-text">$50.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Jeans" data-price="50.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="images/item3.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Boot</h5>
+                            <p class="card-text">$40.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Boot" data-price="40.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <h1 id="Electronic">Electronic</h1>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item4.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Samsung A72</h5>
+                            <p class="card-text">$900.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Samsung A72" data-price="900.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item5.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">IWatch</h5>
+                            <p class="card-text">$700.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="IWatch" data-price="700.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item6.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Lenovo Laptop</h5>
+                            <p class="card-text">$1500.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Lenovo Laptop" data-price="1500.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <h1 id="cosmetics">Cosmetics</h1>
+                <div class="col-md-4 pb-5">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item7.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Nivdea Shaving gel</h5>
+                            <p class="card-text">$30.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Shaving gel" data-price="30.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 pb-5">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item8.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Garnier</h5>
+                            <p class="card-text">$40.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Garnier" data-price="40.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 pb-5">
+                    <div class="card">
+                        <img class="card-img-top p-3" src="images/item9.jpg" alt="Item 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Nail Serum</h5>
+                            <p class="card-text">$15.00</p>
+                            <div class="cardbody">
+                            <button id="Addcart" class="btn btn-primary add-to-cart" data-item="Nail Serum" data-price="15.00">Add to Cart</button>
+                            <div class="quantity-controls">
+                            <button id="down" class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="inpu">
+                            <button id="up" class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                        </div></div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="footer pt-5 pb-3 text-white-50 text-md-start">
+        <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <div class="info">
+                                <img src="images/logo.png" alt="" class="mb-4" width="150px">
+                                <p class="mb-4">Discover the Essence of Elegance and Quality at Comercio Your Ultimate Destination for Unmatched Shopping Experience!</p>
+                            </div>
+                    
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-4">
+                        <div class="links">
+                            <h5 class ="text-white">Links</h5>
+                            <ul class="list-unstyled lh-lg">
+                                <li><a id="h" href="#">Home</a></li>
+                                <li><a id="rei" target="_blank" href="RegistrationForm.html">Registration</a></li>
+                                <li><a id="sigo" href="#">Sign in</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                    <h5 class="text-white" id="Contactuso">Contact Us</h5>
+                    <p class="lh-lg">Subscribe to our Social media to get updates about our grand offers.</p>
+                    <ul class="d-flex mt-3 list-unstyled gap-3" >
+                        <li>
+                          <a class="d-block text-light" href="https://www.facebook.com/" target="_blank"
+                            ><i id="f" class="fa-brands fa-facebook fa-lg facebook rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://x.com/" target="_blank"
+                            ><i id="x" class="fa-brands fa-twitter fa-lg twitter rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li> 
+                          <a class="d-block text-light" href="https://www.linkedin.com/login" target="_blank"
+                            ><i id="l" class="fa-brands fa-linkedin fa-lg linkedin rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://www.youtube.com/" target="_blank"
+                            ><i id="y" class="fa-brands fa-youtube fa-lg youtube rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                      </ul>
+
+                    </div>
+
+                </div>
+
+        </div>
+
+    </div>
+    <div id="footer-bottom">
+        <div class="container">
+          <hr class="m-0">
+          <div class="row mt-3">
+            <div class="col-md-6 copyright">
+              <p class="secondary-font">© 2024 Comercio. All rights reserved.</p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    <script src="js/all.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="java.js"></script>
+</body>
+</html>

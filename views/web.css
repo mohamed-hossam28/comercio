@@ -1,0 +1,388 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: white;
+    padding: 100px 0;
+}
+
+.header h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+}
+
+.header p {
+    font-size: 1.2em;
+}
+
+.categories .card {
+    transition: transform 0.3s;
+}
+
+.categories .card:hover {
+    transform: scale(1.05);
+}
+
+.categories .btn-primary:hover {
+    background-color: hsl(178, 63%, 41%);
+}
+.categories .btn-primary{
+    background-color: hsl(178, 63%, 51%);
+    border:none;
+}
+footer ul li {
+    list-style: none;
+    margin: 0.5em 0;
+}
+
+footer ul li a {
+    text-decoration: none;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+}
+.navbar{
+
+    background-color: hsl(214, 27%, 10%);
+    
+    }
+    #se{
+    
+        width: 550px;
+    }
+    #searchbn,#person,#cart{
+    border: none;
+    box-shadow: none;
+    color: white;
+    background-color: hsl(214, 27%, 10%);
+    
+    }
+    #searchbn:hover{
+        color:#33d1cc;
+    }
+    
+    .navbar
+    .navbar-nav
+    .nav-link{
+        color: white;
+    }
+    .navbar
+    .navbar-nav
+    .nav-link.active,
+    .navbar
+    .navbar-nav
+    .nav-link:hover,
+    .navbar
+    .navbar-nav
+    .nav-link:focus,
+    #cart:hover,.person:hover,.name:hover{
+    
+        color: hsl(178, 63%, 51%);
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        min-width: 160px;
+        z-index: 1;
+    }
+    .dropdown-item {
+        padding: 12px 16px;
+        display: block;
+    }
+    .dropdown-item:hover {
+        background-color: #f1f1f1;
+    }
+
+#log{
+color: white;
+border-color: hsl(178, 63%, 51%);
+border-radius: 15px;
+}
+#log:hover,#searchbn:hover,#home:hover,#cart:hover{
+    background-color: hsl(214, 27%, 30%);
+}
+#cart{
+border-radius: 40%;
+font-size: x-large;
+}
+
+.inputs{
+    
+    padding-bottom: 40px;
+    padding-right: 20px;
+    display: flex;
+    
+}
+.labelem{
+    padding-right: 50px;
+}
+.labelpas{
+    padding-right: 25px;
+}
+
+input[type="email"],input[type="password"]
+ {
+    flex: 1;
+    padding: 2px 3px;
+    border: 2px solid;
+    border-radius: 3px; 
+}
+.submit{
+    background-color: hsl(178, 63%, 51%);
+    color: black;
+    font-weight:500;
+    border-radius: 20px;
+    padding: 10px 30px;
+    transition: 0.5s ;
+}
+.submit:hover{
+    cursor:pointer;
+    transform: scale(1.1);
+}
+.reg{
+   display: flex;
+   flex: 1;
+    justify-content: center;
+}
+.icon{
+display: flex;
+
+margin-left: -10px;
+/* align-items: flex-start; */
+justify-content: space-between;
+align-items: stretch;
+
+   
+}
+.name{
+color: white;
+font-size: larger;
+    padding-left: 5px;
+}
+.rmo{
+
+    background-color: #DC3545;
+    color: white;
+    border-radius: 5px;
+
+}
+.cart-window {
+    display: none;
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    width: 400px;
+    background-color: hsl(214, 27%, 10%);
+    border: 1px solid  hsl(178, 63%, 51%);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    color: white;
+}
+
+.cart-window-header {
+    padding: 10px;
+    background-color: hsl(178, 63%, 51%);
+    border: 3px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#cartwindowheader{
+
+    color: black;
+    font-weight: 600;
+}
+
+.cart-window-body {
+    padding: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.cart-total {
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.remove-item {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#ContactUs{
+width: 92px;
+padding-left: 5px;
+}
+.icon{
+    color: white;
+}
+#searchbn:hover   {
+
+    color: hsl(178, 89%, 89%);
+}
+#log:hover {
+
+    color: hsl(178, 63%, 51%);
+}
+.landing{
+
+    background-color: #1A2940;
+    min-height: calc(100vh - 130px);
+}
+#textlanding{
+/* display: flex; */
+font-family: "Parisienne", cursive;
+
+
+justify-content: center;
+align-items: center;
+padding: 50px;
+
+padding-top: 50px;
+}
+.footer{
+
+    background-color: hsl(214, 27%, 10%);;
+}
+#footer-bottom{
+color: white;
+    background-color:  hsl(214, 27%, 10%);
+}
+#Clothes,#Electronic,#cosmetics{
+display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    font-family: "Parisienne", cursive;
+}
+.categories-item{
+    color: hsl(178, 63%, 48%);
+    
+}
+.categories-item:hover{
+    color: hsl(178, 63%, 41%);
+    
+}
+#comer{
+
+    color:  #33d1cc;
+}
+.title{
+
+    display: flex;
+justify-content: center;
+
+}
+#welcome{
+    margin-right: 20px;
+}
+#f:hover{
+    color: rgb(78, 133, 220);
+}
+#x:hover{
+    color: rgb(57, 223, 249);
+}
+#l:hover{
+color: rgb(8, 111, 184);
+}
+#y:hover{
+    color: rgb(184, 48, 48);
+}
+#h,#rei,#sigo{
+    color: #b1b1b1;
+    
+    }
+    #item{
+        width: 120px;
+        display: inline-block;
+    }
+
+#inpu{
+width: 60px;
+padding: 2px;
+height: 40px;
+padding-bottom: 9px;
+font-size: larger;
+border-radius: 4px;
+}    
+#up,#down{
+    color: #fff;
+    background-color: hsl(190, 47%, 55%);
+    height: 40px;
+}
+#Addcart{
+border: 1px solid #6C757D;
+height: 40px;
+left: 300px;
+background-color: hsl(190, 47%, 55%);
+
+}
+
+#up:hover,#down:hover
+{
+    background-color: hsl(190, 91%, 68%);
+}
+#Addcart:hover
+{
+    background-color: hsl(190, 91%, 68%);
+}
+#Addcart:active{
+    background-color: rgb(99, 190, 255);
+}
+#up:active,#down:active{
+    background-color: rgb(99, 190, 255);
+}
+#Addcart:focus
+{
+    box-shadow: none;
+}
+#up:focus,#down:focus
+{
+    box-shadow: none;
+}
+
+.cardbody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-to-cart {
+    margin-right: auto;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-controls button {
+    margin: 0 5px;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+}
+
+#Addcart.focused {
+    background-color: #1A2940;
+    box-shadow: none;
+}

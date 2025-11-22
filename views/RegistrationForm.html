@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="shortcut icon" type="x-icon" href="images/Reg.png">
+    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Parisienne&display=swap" rel="stylesheet">
+</head>
+<style>
+#Allreg{
+    display: flex;
+    justify-content: center;
+    /* padding: 50px; */
+    /* border: 3px solid #fff; */
+    
+}
+
+    #regtitle{
+
+        /* text-align: center; */
+        font-family: "Parisienne", cursive;
+        margin-left: 50px;
+    }
+    body{
+       background-color: hsl(214, 27%, 10%);
+        color:hsl(178, 63%, 51%);
+    }
+    label{
+
+        width:205px;
+        display:inline-block ;
+    }
+    #date{
+
+        width: 188px;
+    }
+select{
+    width:185px;
+}
+input,select,#em,#pas{
+    background-color: hsl(214, 27%, 30%);
+    border-radius: 6px;
+    color: #b1b1b1;
+}
+.choose{
+    border: 2px white;
+    box-shadow: 0px 0px 5px hsl(178, 63%, 51%);
+    padding-left:50px ;
+    padding: 15px;
+    margin-right: 50px;
+}
+p{
+    width: 400px;
+}
+h1{
+    width: 300px;
+}
+
+.su{
+    background-color: hsl(178, 63%, 51%);
+    color: black;
+    font-weight:500;
+    border-radius: 20px;
+    padding: 10px 30px;
+    transition: 0.5s ;
+margin-left: 145px;
+}
+.su:hover{
+    cursor:pointer;
+    transform: scale(1.1);
+}
+#ho,#regi,#signo{
+color: #b1b1b1;
+}
+#em,#pas{
+    border-color: #767676;
+}
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+    </style>
+<body >
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand logo" href="Web.html">
+                <img class="fa-0x" src="images/logo.png" alt="" width="150px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main" aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="se">
+                <button class="btn btn-outline-success" type="submit" id="searchbn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <div class="collapse navbar-collapse" id="main">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="btn nav-link active" aria-current="page" href="#" id="home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" target="_blank" href="Web.html#Clothes">Clothes</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="Web.html#Electronic">Electronic</a></li>
+                            <li><a class="dropdown-item" target="_blank" href="Web.html#cosmetics">cosmetics</a></li>
+                        </ul>
+                    </li>
+                    <li> <div class="contact">
+                        <a class="btn nav-link" aria-current="page" href="#Contactuso" id="ContactUs" >Contact Us</a>
+                    </div>
+                    </li>
+                </ul>
+                <a href="Web.html#login" target="_blank" class="btn text-white" id="log">Login</a>
+        
+                <a  class="nav-link" href="#" id="userIcon" style="display:none;">
+                    <div class="icon">
+                    <div class="person">
+                    <i class="fa-regular fa-circle-user  fa-2x"></i>
+                    </div>
+                    <div class="name">Ahmed</div>
+                </div>
+                </a>
+                
+                </div>
+        </div>
+    </nav>
+
+
+
+<br>
+    <!-- el form -->
+<div id="Allreg">
+
+    <div class="choose">
+        <h1 id="regtitle"> <b>Registration Form</b></h1> 
+        <hr width="400px" class="m-0">
+        <br>
+        
+        <p ><label for="First">First name :</label><input type="text" form="file"></p>
+        <p ><label for="Last">Last name :</label><input type="text" form="file"></p>
+        <p ><label for="Date">Date of birth:</label><input type="date" form="file" id="date"></p>
+        <p ><label for="email">email :</label><input id="em" type="email" form="file"></p> 
+        <p><label for="password">password :</label><input id="pas" type="password" form="file"></p> 
+        <p><label for="sex">Sex :</label>Male : <input type="radio" form="file" name="sex"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Female : <input type="radio" form="file" name="sex" id="female"></p>
+        <p><label for="Phone">Phone number : </label><input type="number" form="file" contextmenu="none" placeholder=" (###) ###-###"> </p>
+        <label for="Country">Choose your Country :</label>
+        <select name="Country" id="Country">
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="uk">United Kingdom</option>
+            <option value="au">Australia</option>
+            <option value="in">India</option>
+            <option value="de">Germany</option>
+            <option value="fr">France</option>
+            <option value="cn">China</option>
+            <option value="jp">Japan</option>
+            <option value="br">Brazil</option>
+        </select>
+        <div>
+            <hr width="370px" class="m-3">
+            
+            <button id="Su" onclick="go()" href="#" class="su">Submit</button>
+        </div>
+    </div>
+</div>
+<!-- footer -->
+
+    <div class="footer pt-5 pb-3 text-white-50 text-md-start">
+        <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <div class="info">
+                                <img src="images/logo.png" alt="" class="mb-4" width="150px">
+                                <p class="mb-4">Discover the Essence of Elegance and Quality at Comercio Your Ultimate Destination for Unmatched Shopping Experience!</p>
+                            </div>
+                    
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-4">
+                        <div class="links">
+                            <h5 class ="text-white">Links</h5>
+                            <ul class="list-unstyled lh-lg">
+                                            <li><a id="ho" href="#">Home</a></li>
+                                            <li><a id="regi" href="#">Registration</a></li>
+                                            <li><a id="signo" target="_blank" href="Web.html#login">Sign in</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                    <h5 class="text-white" id="Contactuso">Contact Us</h5>
+                    <p class="lh-lg">Subscribe to our Social media to get updates about our grand offers.</p>
+                    <ul class="d-flex mt-3 list-unstyled gap-3" >
+                        <li>
+                          <a class="d-block text-light" href="https://www.facebook.com/" target="_blank"
+                            ><i id="f" class="fa-brands fa-facebook fa-lg facebook rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://x.com/" target="_blank"
+                            ><i id="x" class="fa-brands fa-twitter fa-lg twitter rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li> 
+                          <a class="d-block text-light" href="https://www.linkedin.com/login" target="_blank"
+                            ><i id="l" class="fa-brands fa-linkedin fa-lg linkedin rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://www.youtube.com/" target="_blank"
+                            ><i id="y" class="fa-brands fa-youtube fa-lg youtube rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                      </ul>
+
+                    </div>
+
+                </div>
+
+        </div>
+
+    </div>
+    <div id="footer-bottom">
+        <div class="container">
+          <hr class="m-0">
+          <div class="row mt-3">
+            <div class="col-md-6 copyright">
+              <p class="secondary-font">© 2024 Comercio. All rights reserved.</p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    <script src="js/all.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="java.js"></script>
+</body>
+</html>
