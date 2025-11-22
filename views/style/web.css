@@ -9,7 +9,29 @@ body {
     color: white;
     padding: 100px 0;
 }
+.cart-checkout {
+    padding: 15px 20px;
+    margin-top: 20px !important;
+    border-top: 2px solid #e0e0e0;
+}
 
+.btn-checkout {
+    width: 100%;
+    padding: 12px 20px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background-color: hsl(178, 63%, 51%) !important;
+    border: none !important;
+    color: #000 !important;
+    transition: all 0.3s ease;
+}
+
+.btn-checkout:hover {
+    background-color: hsl(178, 63%, 45%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.4);
+}
 .header h1 {
     font-size: 3em;
     margin-bottom: 0.5em;
@@ -225,6 +247,11 @@ font-size: larger;
 .remove-item {
     cursor: pointer;
     margin-left: 10px;
+    background-color: #ff4444;
+    color: white;
+
+    border: none;
+    border-radius: 3px;
 }
 #ContactUs{
 width: 92px;

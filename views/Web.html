@@ -70,19 +70,27 @@
     </nav>
 
     <!-- Cart Window -->
-    <div class="cart-window" id="cartWindow">
-        <div class="cart-window-header">
-            <div class="text-black" id="cartwindowheader" >
+<div class="cart-window" id="cartWindow">
+    <div class="cart-window-header">
+        <div class="text-black" id="cartwindowheader">
             <span>Shopping Cart</span>
-            </div>
-            <button class="btn btn-sm btn-danger" onclick="toggleCartWindow()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="cart-window-body" id="cartItems"></div>
-        <div class="cart-total">
-            <span>Total:</span>
-            <span id="cartTotal">$0.00</span>
-        </div>
+        <button class="btn btn-sm btn-danger" onclick="toggleCartWindow()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
+
+    <div class="cart-window-body" id="cartItems"></div>
+
+    <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+    </div>
+    
+    <div class="cart-checkout text-center p-3">
+        <button id="checkoutBtn" class="btn btn-checkout w-100"><i class="fa-solid fa-credit-card"></i> Checkout</button>
+    </div>
+</div>
 
     <!-- Login Modal -->
     <div class="modal" tabindex="-1" id="login">
