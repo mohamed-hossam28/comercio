@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import database
+from models.users import User
+from routers import products
 
 app = FastAPI()
 # --- static files ---
@@ -43,35 +45,4 @@ async def read_registration(request: Request):
         }
     )
 
-@app.post("/register-user")
-async def register_user(
-    first_name: str = Form(...),
-    last_name: str = Form(...),
-    dob: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    sex: str = Form(...),
-    phone: str = Form(...),
-    country: str = Form(...),
-    db: Session = Depends(database.get_db)
-):
-
-    from models.users import User
-
-    new_user = User(
-        first_name=first_name,
-        last_name=last_name,
-        dob=dob,
-        email=email,
-        password=password,
-        sex=sex,
-        phone=phone,
-        country=country
-    )
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return {"message": "Registration successful!", "user_id": new_user.id}
-
+app.include_router(products.projects_router)
