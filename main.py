@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Form, Depends
+from fastapi import FastAPI, Form, Depends, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import database
 
 app = FastAPI()
-
 # --- static files ---
 app.mount("/css", StaticFiles(directory="views/css"), name="css")
 app.mount("/js", StaticFiles(directory="views/js"), name="js")
@@ -18,6 +18,7 @@ app.mount("/webfonts", StaticFiles(directory="views/webfonts"), name="webfonts")
 def on_startup():
     database.init_db()
 
+templates = Jinja2Templates(directory="views")
 
 @app.get("/")
 async def read_root():
@@ -63,3 +64,14 @@ async def register_user(
     db.refresh(new_user)
 
     return {"message": "Registration successful!", "user_id": new_user.id}
+
+async def read_registration(request: Request): 
+    """
+    Renders the RegistrationForm.html page.
+    """
+    return templates.TemplateResponse(
+        "RegistrationForm.html", 
+        {
+            "request": request
+        }
+    )
