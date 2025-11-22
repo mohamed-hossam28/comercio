@@ -151,26 +151,35 @@ input[type=number]::-webkit-inner-spin-button {
 <div id="Allreg">
 
     <div class="choose">
-        <form action="/register-user" method="post">
+       <form action="/register-user" method="post">
 
     <p><label>First name :</label>
-        <input type="text" name="first_name" required>
+        <input type="text" name="first_name" 
+               pattern="^[A-Za-z]{3,}$"
+               title="Only letters, minimum 3 characters" required>
     </p>
 
     <p><label>Last name :</label>
-        <input type="text" name="last_name" required>
+        <input type="text" name="last_name" 
+               pattern="^[A-Za-z]{3,}$"
+               title="Only letters, minimum 3 characters" required>
     </p>
 
     <p><label>Date of birth:</label>
-        <input type="date" name="dob" id="date" required>
+        <input type="date" name="dob" required>
     </p>
 
     <p><label>Email :</label>
-        <input id="em" type="email" name="email" required>
+        <input type="email" name="email"
+               pattern="^[\w.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+               title="Enter a valid email address." required>
     </p>
 
     <p><label>Password :</label>
-        <input id="pas" type="password" name="password" required>
+        <input type="password" name="password" 
+               pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+               title="Min 8 chars, uppercase, lowercase, number, special char."
+               required>
     </p>
 
     <p><label>Sex :</label>
@@ -179,29 +188,26 @@ input[type=number]::-webkit-inner-spin-button {
     </p>
 
     <p><label>Phone number :</label>
-        <input type="number" name="phone" required>
+        <input type="tel" name="phone"
+               pattern="^(010|011|012|015)\d{8}$"
+               title="Valid Egyptian phone number (e.g., 01012345678)"
+               required>
     </p>
 
-    <label for="Country">Choose your Country :</label>
-    <select name="country" id="Country">
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="uk">United Kingdom</option>
-        <option value="au">Australia</option>
-        <option value="in">India</option>
-        <option value="de">Germany</option>
-        <option value="fr">France</option>
-        <option value="cn">China</option>
-        <option value="jp">Japan</option>
-        <option value="br">Brazil</option>
-    </select>
+    <p><label>Country :</label>
+        <select name="country" required>
+            <option value="">-- Select --</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="uk">United Kingdom</option>
+            ...
+        </select>
+    </p>
 
-    <div>
-        <hr width="370px" class="m-3">
-        <button type="submit" class="su">Submit</button>
-    </div>
+    <button type="submit">Submit</button>
 
 </form>
+
 
     </div>
 </div>
