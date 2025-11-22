@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 import database
 from models.users import User
-from routers import products
+from routers import users
 
 app = FastAPI()
 # --- static files ---
@@ -45,4 +45,4 @@ async def read_registration(request: Request):
         }
     )
 
-app.include_router(products.projects_router)
+app.include_router(users.users_router)
