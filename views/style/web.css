@@ -140,7 +140,7 @@ font-size: x-large;
 
 .inputs{
     
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     padding-right: 20px;
     display: flex;
     
@@ -412,4 +412,15 @@ background-color: hsl(190, 47%, 55%);
 #Addcart.focused {
     background-color: #1A2940;
     box-shadow: none;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: medium;
 }

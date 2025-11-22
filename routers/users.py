@@ -35,3 +35,20 @@ async def register_user(
     db.refresh(new_user)
 
     return {"message": "Registration successful!", "user_id": new_user.id}
+
+
+@users_router.post("/login")
+async def login_user(
+    email: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(database.get_db)
+):
+    user = db.query(User).filter(User.email == email, User.password == password).first()
+    if user:
+        return {"user_name": user.first_name}
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"message": "Invalid email or password"}
+        )
+

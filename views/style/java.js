@@ -172,6 +172,56 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     } catch (err) {
         console.error("Checkout error:", err);
         alert("Error connecting to server.");
+async function submitx() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+
+     if (!email) {
+        document.getElementById("emailError").textContent = "Email is required";
+        return;
+    }
+
+    if (!password) {
+        document.getElementById("passwordError").textContent = "Password is required";
+        return;
+    }
+
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login successful
+            document.getElementById("userIcon").style.display = "block";
+            document.getElementById("userName").innerText = data.user_name;
+            const login_form = bootstrap.Modal.getInstance(document.getElementById('login'));
+            login_form.hide();
+        } else {
+            document.getElementById("Error").textContent = data.message;
+        }
+
+    } catch (error) {
+        document.getElementById("passwordError").textContent = "Server connection error";
+    }
+}
+
+
+function go(){
+    window.location.href = 'web.html?modify=true';
+}
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('modify') === 'true') {
+        document.getElementById('userIcon').style.display = 'block';
     }
 });
 
