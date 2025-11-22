@@ -59,6 +59,56 @@
 </head>
 
 <body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand logo" href="#">
+                <img class="fa-0x" src="images/logo.png" alt="" width="150px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main" aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="se">
+                <button class="btn btn-outline-success" type="submit" id="searchbn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <div class="collapse navbar-collapse" id="main">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="btn nav-link active" aria-current="page" href="#" id="home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#Clothes">Clothes</a></li>
+                            <li><a class="dropdown-item" href="#Electronic">Electronic</a></li>
+                            <li><a class="dropdown-item" href="#cosmetics">cosmetics</a></li>
+                        </ul>
+                    </li>
+                    <li> <div class="contact">
+                        <a class="btn nav-link" aria-current="page" href="#Contactuso" id="ContactUs" >Contact Us</a>
+                    </div>
+                    </li>
+                </ul>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
+                <button class="p-3" id="cart" onclick="display()"><i class="fa-solid fa-cart-shopping"></i></button>
+                <a  class="nav-link" href="#" id="userIcon" style="display:none;">
+                    <div class="icon">
+                    <div class="person">
+                    <i class="fa-regular fa-circle-user  fa-2x"></i>
+                    </div>
+                    <div class="name">Ahmed</div>
+                </div>
+                </a>
+                
+                </div>
+        </div>
+    </nav>
 
     <!-- Registration Container -->
     <div id="Allreg">
@@ -150,6 +200,77 @@
 
         </div>
     </div>
+
+    <div class="footer pt-5 pb-3 text-white-50 text-md-start">
+        <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <div class="info">
+                                <img src="images/logo.png" alt="" class="mb-4" width="150px">
+                                <p class="mb-4">Discover the Essence of Elegance and Quality at Comercio Your Ultimate Destination for Unmatched Shopping Experience!</p>
+                            </div>
+                    
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-4">
+                        <div class="links">
+                            <h5 class ="text-white">Links</h5>
+                            <ul class="list-unstyled lh-lg">
+                                <li><a id="h" href="#">Home</a></li>
+                                <li><a id="rei" target="_blank" href="RegistrationForm.html">Registration</a></li>
+                                <li><a id="sigo" href="#">Sign in</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                    <h5 class="text-white" id="Contactuso">Contact Us</h5>
+                    <p class="lh-lg">Subscribe to our Social media to get updates about our grand offers.</p>
+                    <ul class="d-flex mt-3 list-unstyled gap-3" >
+                        <li>
+                          <a class="d-block text-light" href="https://www.facebook.com/" target="_blank"
+                            ><i id="f" class="fa-brands fa-facebook fa-lg facebook rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://x.com/" target="_blank"
+                            ><i id="x" class="fa-brands fa-twitter fa-lg twitter rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li> 
+                          <a class="d-block text-light" href="https://www.linkedin.com/login" target="_blank"
+                            ><i id="l" class="fa-brands fa-linkedin fa-lg linkedin rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a class="d-block text-light" href="https://www.youtube.com/" target="_blank"
+                            ><i id="y" class="fa-brands fa-youtube fa-lg youtube rounded-circle p-2"></i
+                          ></a>
+                        </li>
+                      </ul>
+
+                    </div>
+
+                </div>
+
+        </div>
+
+    </div>
+    <div id="footer-bottom">
+        <div class="container">
+          <hr class="m-0">
+          <div class="row mt-3">
+            <div class="col-md-6 copyright">
+              <p class="secondary-font">© 2024 Comercio. All rights reserved.</p>
+            </div>
+            
+          </div>
+        </div>
+      </div>
 
 </body>
 </html>
