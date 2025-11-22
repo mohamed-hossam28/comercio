@@ -78,8 +78,45 @@ document.querySelectorAll('.decrease-quantity').forEach(button => {
 });
 
 
-function submitx(){
-    document.getElementById('userIcon').style.display = 'block';
+async function submitx() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+
+     if (!email) {
+        document.getElementById("emailError").textContent = "Email is required";
+        return;
+    }
+
+    if (!password) {
+        document.getElementById("passwordError").textContent = "Password is required";
+        return;
+    }
+
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login successful
+            document.getElementById("userIcon").style.display = "block";
+            document.getElementById("userName").innerText = data.user_name;
+            const login_form = bootstrap.Modal.getInstance(document.getElementById('login'));
+            login_form.hide();
+        } else {
+            document.getElementById("Error").textContent = data.message;
+        }
+
+    } catch (error) {
+        document.getElementById("passwordError").textContent = "Server connection error";
+    }
 }
 
 

@@ -56,12 +56,13 @@
                 </ul>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
                 <button class="p-3" id="cart" onclick="display()"><i class="fa-solid fa-cart-shopping"></i></button>
+
                 <a  class="nav-link" href="#" id="userIcon" style="display:none;">
                     <div class="icon">
                     <div class="person">
                     <i class="fa-regular fa-circle-user  fa-2x"></i>
                     </div>
-                    <div class="name">Ahmed</div>
+                    <div class="name" id ="userName"></div>
                 </div>
                 </a>
                 
@@ -85,7 +86,7 @@
     </div>
 
     <!-- Login Modal -->
-    <div class="modal" tabindex="-1" id="login">
+    <div class="modal" tabindex="-1" id="login" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -99,12 +100,14 @@
                             <div class="for">
                                 <div class="inputs">
                                     <label class="labelem" for="email" >E-mail</label>
-                                    <input type="email">
+                                    <input type="email" id="email">
+
                                 </div>
                                 <div class="inputs">
                                     <label class="labelpas" for="password">Password</label>
-                                    <input type="password">
+                                    <input type="password" id="password">
                                 </div>
+                                <span class="error" id="Error"></span>
                                 <div class="reg">
                                     <p>Don't have an account? &nbsp;</p>
                                     <a href="/Register" target="_blank">Sign up instead</a>
@@ -113,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer"  style="justify-content:center;">
                     <button type="button" onclick="submitx()" class="submit" id="Submitx">Submit</button>
                 </div>
             </div>
