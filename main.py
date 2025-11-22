@@ -13,7 +13,6 @@ app.mount("/style", StaticFiles(directory="views/style"), name="style")
 app.mount("/images", StaticFiles(directory="views/images"), name="images")
 app.mount("/webfonts", StaticFiles(directory="views/webfonts"), name="webfonts")
 
-# --- DB init ---
 @app.on_event("startup")
 def on_startup():
     database.init_db()
@@ -21,18 +20,29 @@ def on_startup():
 templates = Jinja2Templates(directory="views")
 
 @app.get("/")
-async def read_root():
-    return FileResponse("views/Web.html")
-
+async def read_root(request: Request): 
+    """
+    Renders the main web.html page.
+    """
+    return templates.TemplateResponse(
+        "Web.html", 
+        {
+            "request": request
+        }
+    )
 
 @app.get("/Register")
-async def read_registration():
-    return FileResponse("views/RegistrationForm.html")
+async def read_registration(request: Request): 
+    """
+    Renders the RegistrationForm.html page.
+    """
+    return templates.TemplateResponse(
+        "RegistrationForm.html", 
+        {
+            "request": request
+        }
+    )
 
-
-# -------------------------------
-# ⭐ POST: Receive Registration Data
-# -------------------------------
 @app.post("/register-user")
 async def register_user(
     first_name: str = Form(...),
@@ -45,7 +55,7 @@ async def register_user(
     country: str = Form(...),
     db: Session = Depends(database.get_db)
 ):
-    # Insert into DB
+
     from models.users import User
 
     new_user = User(
@@ -65,13 +75,3 @@ async def register_user(
 
     return {"message": "Registration successful!", "user_id": new_user.id}
 
-async def read_registration(request: Request): 
-    """
-    Renders the RegistrationForm.html page.
-    """
-    return templates.TemplateResponse(
-        "RegistrationForm.html", 
-        {
-            "request": request
-        }
-    )
