@@ -452,10 +452,12 @@ input[type="password"] {
     padding-top: 50px;
 }
 
-.footer {}
-
-.categories-item:hover {
+.categories-item {
     color: hsl(178, 63%, 41%);
+
+}
+.categories-item:hover {
+    color: hsl(178, 68%, 25%);
 
 }
 
@@ -496,6 +498,22 @@ input[type="password"] {
 #sigo,
 #faq {
     color: #b1b1b1;
+
+}
+#h:hover {
+    color:hsl(178, 63%, 41%);
+
+}
+#rei:hover {
+    color:hsl(178, 63%, 41%);
+
+}
+#sigo:hover {
+    color:hsl(178, 63%, 41%);
+
+}
+#faq:hover {
+    color:hsl(178, 63%, 41%);
 
 }
 

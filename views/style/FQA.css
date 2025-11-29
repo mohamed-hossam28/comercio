@@ -18,7 +18,7 @@ body {
     display: block;
     width: 60px;
     height: 3px;
-    background-color: #007bff; 
+    background-color: hsl(178, 63%, 41%); 
     margin: 10px auto 0;
     border-radius: 5px;
 }
@@ -62,7 +62,7 @@ body {
     font-family: 'Font Awesome 5 Free'; 
     font-weight: 900;
     transition: transform 0.3s ease;
-    color: #007bff; 
+    color: hsl(178, 63%, 41%); 
     font-size: 0.9em;
 }
 
@@ -74,7 +74,7 @@ body {
 .faq-question.active {
     background-color: #e9ecef; 
     border-bottom: 1px solid #dcdcdc; 
-    color: #007bff; 
+    color: hsl(178, 63%, 41%); 
 }
 
 
@@ -101,11 +101,11 @@ body {
 
 /* Navbar and Footer Consistency */
 .navbar-nav .nav-link.active {
-    color: #007bff !important; 
+    color: hsl(178, 63%, 41%) !important; 
     font-weight: 600;
 }
 .navbar-nav .nav-link:hover {
-    color: #007bff !important;
+    color: hsl(178, 63%, 41%) !important;
 }
 
 .footer a {
