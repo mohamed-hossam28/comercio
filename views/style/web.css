@@ -517,7 +517,8 @@ input[type="password"] {
 
 #h,
 #rei,
-#sigo {
+#sigo, 
+#faq{
     color: #b1b1b1;
 
 }
@@ -699,3 +700,4 @@ input[type="password"] {
         transform: translateY(-10px);
     }
 }
+ 

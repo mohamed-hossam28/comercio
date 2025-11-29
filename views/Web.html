@@ -59,6 +59,9 @@
                             <a class="btn nav-link" aria-current="page" href="#Contactuso" id="ContactUs">Contact Us</a>
                         </div>
                     </li>
+                     <li class="nav-item">
+                        <a class="btn nav-link active" aria-current="page" href="/FQA" id="faqLink">FAQ</a>
+                    </li>
                 </ul>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
                 <a href="#" class="btn text-white" id="logoutBtn" style="display:none;">Logout</a>
@@ -464,13 +467,18 @@
                 <div class="col-4">
                     <div class="links">
                         <h5 class="text-white">Links</h5>
-                        <ul class="list-unstyled lh-lg">
-                            <li><a id="h" href="#">Home</a></li>
-                            <li><a id="rei" target="_blank" href="RegistrationForm.html">Registration</a></li>
-                            <li><a id="sigo" href="#">Sign in</a></li>
-
-                        </ul>
-                    </div>
+                        <div class="d-flex justify-content-start gap-5"> 
+                            <ul class="list-unstyled lh-lg">
+                                <li><a id="h" href="#">Home</a></li>
+                                <li><a id="rei" target="_blank" href="/Register">Registration</a></li>
+                                <li><a id="sigo" href="#">Sign in</a></li>
+                            </ul>
+                            
+                            <ul class="list-unstyled lh-lg">
+                                <li><a id="faq" href="/FQA">FAQ</a></li> 
+                            </ul>
+                        </div>
+                    </div>  
                 </div>
                 <div class="col-4">
                     <h5 class="text-white" id="Contactuso">Contact Us</h5>
@@ -499,19 +507,19 @@
             </div>
 
         </div>
+        <div id="footer-bottom">
+                <div class="container">
+                    <hr class="m-0">
+                    <div class="row mt-3">
+                        <div class="col-md-6 copyright">
+                            <p class="secondary-font">© 2024 Comercio. All rights reserved.</p>
+                        </div>
 
-    </div>
-    <div id="footer-bottom">
-        <div class="container">
-            <hr class="m-0">
-            <div class="row mt-3">
-                <div class="col-md-6 copyright">
-                    <p class="secondary-font">© 2024 Comercio. All rights reserved.</p>
+                    </div>
                 </div>
-
             </div>
-        </div>
-    </div>
+            </div>
+  
 
     <script src="js/all.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>

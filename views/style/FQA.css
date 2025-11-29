@@ -1,0 +1,156 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; 
+    margin: 0;
+    padding: 0;
+}
+
+.faq-container h1 {
+    color: #343a40; 
+    font-weight: 700;
+    margin-bottom: 2.5rem !important;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.faq-container h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff; 
+    margin: 10px auto 0;
+    border-radius: 5px;
+}
+
+/* FAQ Item Style */
+.faq-item {
+    background: #ffffff; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0; 
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.faq-item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+}
+
+/* Question Header Style */
+.faq-question {
+    padding: 18px 25px;
+    cursor: pointer;
+    font-weight: 600;
+    background: #ffffff;
+    color: #343a40; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+    font-size: 1.1em;
+}
+
+.faq-question:hover {
+    background-color: #f8f9fa; 
+}
+
+/* Arrow Icon/Indicator */
+.faq-question::after {
+    content: '\f078'; 
+    font-family: 'Font Awesome 5 Free'; 
+    font-weight: 900;
+    transition: transform 0.3s ease;
+    color: #007bff; 
+    font-size: 0.9em;
+}
+
+/* Rotate arrow when active */
+.faq-question.active::after {
+    transform: rotate(180deg); 
+}
+
+.faq-question.active {
+    background-color: #e9ecef; 
+    border-bottom: 1px solid #dcdcdc; 
+    color: #007bff; 
+}
+
+
+.faq-answer {
+    box-sizing: border-box; 
+    display: block;        
+    
+    padding: 0 25px; 
+    max-height: 0; 
+    overflow: hidden;
+  
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    background: #fdfdfd;
+    color: #6c757d; 
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+/* Apply padding when the answer is displayed */
+.faq-question.active + .faq-answer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+/* Navbar and Footer Consistency */
+.navbar-nav .nav-link.active {
+    color: #007bff !important; 
+    font-weight: 600;
+}
+.navbar-nav .nav-link:hover {
+    color: #007bff !important;
+}
+
+.footer a {
+    color: #adb5bd; 
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: #ffffff; 
+    text-decoration: none;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.faq-container {
+    flex: 1;
+}
+
+
+.footer {
+    background-color: #222; 
+    color: white;
+    padding: 20px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
