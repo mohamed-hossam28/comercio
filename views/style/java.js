@@ -241,6 +241,10 @@ function showOrderSummary() {
         // Show Modal
         const summaryModal = new bootstrap.Modal(document.getElementById('orderSummaryModal'));
         summaryModal.show();
+
+        // Close Cart Window
+        const cartWindow = document.getElementById('cartWindow');
+        if (cartWindow) cartWindow.style.display = 'none';
     });
 }
 
@@ -404,6 +408,84 @@ document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
     e.preventDefault();
     logout();
 });
+
+// ================================
+// PROFILE MANAGEMENT
+// ================================
+async function openProfileModal() {
+    try {
+        const response = await fetch("/me");
+        if (!response.ok) {
+            showAlert("Please login to view profile.", "error");
+            return;
+        }
+        const data = await response.json();
+
+        document.getElementById('p_firstName').value = data.first_name || "";
+        document.getElementById('p_lastName').value = data.last_name || "";
+        document.getElementById('p_phone').value = data.phone || "";
+        document.getElementById('p_country').value = data.country || "";
+        document.getElementById('p_dob').value = data.dob || "";
+        document.getElementById('p_password').value = "";
+
+        const modalElement = document.getElementById('profileModal');
+        if (modalElement) {
+            const profileModal = new bootstrap.Modal(modalElement);
+            profileModal.show();
+        }
+
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        showAlert("Error loading profile data.", "error");
+    }
+}
+
+async function saveProfile() {
+    const formData = new FormData();
+    formData.append("first_name", document.getElementById('p_firstName').value);
+    formData.append("last_name", document.getElementById('p_lastName').value);
+    formData.append("phone", document.getElementById('p_phone').value);
+    formData.append("country", document.getElementById('p_country').value);
+    formData.append("dob", document.getElementById('p_dob').value);
+
+    const password = document.getElementById('p_password').value;
+    if (password) {
+        formData.append("password", password);
+    }
+
+    try {
+        const response = await fetch("/update-profile", {
+            method: "PUT",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showAlert("Profile updated successfully! 🎉", "success");
+            const profileModalEl = document.getElementById('profileModal');
+            const profileModal = bootstrap.Modal.getInstance(profileModalEl);
+            profileModal.hide();
+
+            if (result.user_name) {
+                document.getElementById("userName").innerText = result.user_name;
+            }
+        } else {
+            showAlert("Update failed: " + (result.message || "Unknown error"), "error");
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        showAlert("Error connecting to server.", "error");
+    }
+}
+
+const userIcon = document.getElementById("userIcon");
+if (userIcon) {
+    userIcon.addEventListener("click", (e) => {
+        e.preventDefault();
+        openProfileModal();
+    });
+}
 
 // ================================
 // PAGE LOAD

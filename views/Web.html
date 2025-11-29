@@ -144,6 +144,51 @@
         </div>
     </div>
 
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="p_firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="p_firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="p_lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="p_phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="p_country">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="p_dob">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_password" class="form-label">New Password (leave blank to keep
+                                current)</label>
+                            <input type="password" class="form-control" id="p_password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Order Summary Modal -->
     <div class="modal fade" id="orderSummaryModal" tabindex="-1" aria-labelledby="orderSummaryLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -163,7 +208,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="confirmOrderBtn"
-                        style="background-color: hsl(178, 63%, 51%); border: none; color: black;">Confirm Order</button>
+                        style="background-color: hsl(178, 63%, 51%); border: none; color: black;">Confirm
+                        Order</button>
                 </div>
             </div>
         </div>
