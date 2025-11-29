@@ -1,4 +1,56 @@
 // ================================
+// GET PRODUCTS
+// ================================
+async function loadCategorizedProducts() {
+    const container = document.getElementById('products_container');
+
+    try {
+        // 1. Fetch the grouped data
+        const response = await fetch('http://127.0.0.1:8000/products/grouped');
+        const data = await response.json();
+
+        container.innerHTML = '';
+
+        // 2. Loop through the Categories (Keys)
+        for (const [categoryName, products] of Object.entries(data)) {
+
+            // A. Create the HTML for the products inside this category
+            let cardsHTML = '';
+            products.forEach(p => {
+                cardsHTML += `
+                            <div class="card">
+                                <img src="${p.image_url}" alt="${p.name}">
+                                <h3>${p.name}</h3>
+                                <p class="price">$${p.price}</p>
+                                <button>Add to Cart</button>
+                            </div>
+                        `;
+            });
+
+            // B. Create the Full Section (Title + Grid)
+            const sectionHTML = `
+                        <div class="category-section">
+                            <h2 class="category-title">${categoryName}</h2>
+                            <div class="product-grid">
+                                ${cardsHTML}
+                            </div>
+                        </div>
+                        <hr style="width: 50%; opacity: 0.3;">
+                    `;
+
+            // C. Add to page
+            container.innerHTML += sectionHTML;
+        }
+
+    } catch (error) {
+        console.error("Error loading products:", error);
+    }
+}
+
+loadCategorizedProducts();
+
+
+// ================================
 // CUSTOM ALERT FUNCTION
 // ================================
 function showAlert(message, type = 'info') {
@@ -241,6 +293,10 @@ function showOrderSummary() {
         // Show Modal
         const summaryModal = new bootstrap.Modal(document.getElementById('orderSummaryModal'));
         summaryModal.show();
+
+        // Close Cart Window
+        const cartWindow = document.getElementById('cartWindow');
+        if (cartWindow) cartWindow.style.display = 'none';
     });
 }
 
@@ -406,9 +462,93 @@ document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
 });
 
 // ================================
+// PROFILE MANAGEMENT
+// ================================
+async function openProfileModal() {
+    try {
+        const response = await fetch("/me");
+        if (!response.ok) {
+            showAlert("Please login to view profile.", "error");
+            return;
+        }
+        const data = await response.json();
+
+        document.getElementById('p_firstName').value = data.first_name || "";
+        document.getElementById('p_lastName').value = data.last_name || "";
+        document.getElementById('p_phone').value = data.phone || "";
+        document.getElementById('p_country').value = data.country || "";
+        document.getElementById('p_dob').value = data.dob || "";
+        document.getElementById('p_password').value = "";
+
+        const modalElement = document.getElementById('profileModal');
+        if (modalElement) {
+            const profileModal = new bootstrap.Modal(modalElement);
+            profileModal.show();
+        }
+
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        showAlert("Error loading profile data.", "error");
+    }
+}
+
+async function saveProfile() {
+    const formData = new FormData();
+    formData.append("first_name", document.getElementById('p_firstName').value);
+    formData.append("last_name", document.getElementById('p_lastName').value);
+    formData.append("phone", document.getElementById('p_phone').value);
+    formData.append("country", document.getElementById('p_country').value);
+    formData.append("dob", document.getElementById('p_dob').value);
+
+    const password = document.getElementById('p_password').value;
+    if (password) {
+        formData.append("password", password);
+    }
+
+    try {
+        const response = await fetch("/update-profile", {
+            method: "PUT",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showAlert("Profile updated successfully! 🎉", "success");
+            const profileModalEl = document.getElementById('profileModal');
+            const profileModal = bootstrap.Modal.getInstance(profileModalEl);
+            profileModal.hide();
+
+            if (result.user_name) {
+                document.getElementById("userName").innerText = result.user_name;
+            }
+        } else {
+            showAlert("Update failed: " + (result.message || "Unknown error"), "error");
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        showAlert("Error connecting to server.", "error");
+    }
+}
+
+const userIcon = document.getElementById("userIcon");
+if (userIcon) {
+    userIcon.addEventListener("click", (e) => {
+        e.preventDefault();
+        openProfileModal();
+    });
+}
+
+// ================================
 // PAGE LOAD
 // ================================
 window.addEventListener("load", () => {
     loadCartFromStorage();
     checkLoginStatus();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('modify') === 'true') {
+        document.getElementById('userIcon').style.display = 'block';
+    }
 });
+
+

@@ -67,11 +67,60 @@ def get_me(request: Request, db: Session = Depends(database.get_db)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Invalid session"})
-    response = JSONResponse(content={"user_id": user.id, "user_name": user.first_name})
+    
+    user_data = {
+        "user_id": user.id,
+        "user_name": user.first_name,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "phone": user.phone,
+        "country": user.country,
+        "dob": user.dob,
+        "sex": user.sex
+    }
+    
+    response = JSONResponse(content=user_data)
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
     return response
+
+
+@users_router.put("/update-profile")
+async def update_profile(
+    request: Request,
+    first_name: str = Form(None),
+    last_name: str = Form(None),
+    phone: str = Form(None),
+    country: str = Form(None),
+    password: str = Form(None),
+    dob: str = Form(None),
+    sex: str = Form(None),
+    db: Session = Depends(database.get_db)
+):
+    token = request.cookies.get("session_token")
+    user_id = auth.get_user_id_from_token(token)
+    
+    if not user_id:
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Not authenticated"})
+        
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "User not found"})
+
+    if first_name: user.first_name = first_name
+    if last_name: user.last_name = last_name
+    if phone: user.phone = phone
+    if country: user.country = country
+    if password: user.password = password
+    if dob: user.dob = dob
+    if sex: user.sex = sex
+
+    db.commit()
+    db.refresh(user)
+    
+    return {"message": "Profile updated successfully!", "user_name": user.first_name}
 
 
 @users_router.post("/logout")
