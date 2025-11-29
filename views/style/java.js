@@ -34,6 +34,7 @@ function saveCartToLocalStorage() {
 
     const cart = Array.from(cartItems).map(item => ({
         name: item.dataset.item,
+        id: parseInt(item.dataset.id),
         price: parseFloat(item.dataset.price),
         quantity: parseInt(item.dataset.quantity)
     }));
@@ -53,7 +54,10 @@ function loadCartFromStorage() {
     cartItemsContainer.innerHTML = "";
 
     cart.forEach(item => {
-        addItemToCartUI(item.name, item.price, item.quantity);
+        // Filter out old items that don't have an ID
+        if (item.id) {
+            addItemToCartUI(item.name, item.price, item.quantity, item.id);
+        }
     });
 
     updateCartTotal();
@@ -63,7 +67,7 @@ function loadCartFromStorage() {
 // ================================
 // ADD ITEM TO UI
 // ================================
-function addItemToCartUI(name, price, quantity) {
+function addItemToCartUI(name, price, quantity, id) {
     const cartItems = document.getElementById('cartItems');
     const existingItem = Array.from(cartItems.children).find(child => child.dataset.item === name);
 
@@ -79,6 +83,7 @@ function addItemToCartUI(name, price, quantity) {
     const newItem = document.createElement('div');
     newItem.className = 'cart-item';
     newItem.dataset.item = name;
+    newItem.dataset.id = id;
     newItem.dataset.price = price;
     newItem.dataset.quantity = quantity;
 
@@ -105,10 +110,11 @@ function addItemToCartUI(name, price, quantity) {
 document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', (e) => {
         const name = e.target.dataset.item;
+        const id = e.target.dataset.id;
         const price = parseFloat(e.target.dataset.price);
         const quantity = parseInt(e.target.parentElement.querySelector('.quantity-input').value);
 
-        addItemToCartUI(name, price, quantity);
+        addItemToCartUI(name, price, quantity, id);
         updateCartTotal();
         saveCartToLocalStorage();
     });
@@ -148,13 +154,14 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
         user_id: 1,
         items: cart.map(item => ({
             product_name: item.name,
+            product_id: item.id,
             price: item.price,
             quantity: item.quantity
         }))
     };
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/cart/checkout", {
+        const response = await fetch("http://127.0.0.1:8000/order/checkout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -168,7 +175,7 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
             document.getElementById('cartTotal').textContent = "$0.00";
             localStorage.removeItem("cart");
         } else {
-            alert("Checkout failed: " + result.detail);
+            alert("Checkout failed: " + JSON.stringify(result.detail));
         }
 
     } catch (err) {
