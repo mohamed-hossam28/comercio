@@ -35,7 +35,7 @@ async def register_user(
     db.commit()
     db.refresh(new_user)
 
-    return {"message": "Registration successful!", "user_id": new_user.id}
+    return {"success": True, "message": "Registration successful"}
 
 
 @users_router.post("/login")
