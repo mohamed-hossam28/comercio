@@ -51,6 +51,58 @@ loadCategorizedProducts();
 
 
 // ================================
+// CUSTOM ALERT FUNCTION
+// ================================
+function showAlert(message, type = 'info') {
+    // Remove existing alert if any
+    const existingAlert = document.querySelector('.custom-alert-overlay');
+    if (existingAlert) existingAlert.remove();
+
+    // Determine emoji based on type
+    let emoji = 'ℹ️';
+    if (type === 'success') emoji = '🎉';
+    if (type === 'error') emoji = '❌';
+    if (type === 'warning') emoji = '⚠️';
+    if (type === 'wave') emoji = '👋';
+
+    // Create alert elements
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+    // Force critical styles inline to ensure visibility
+    overlay.style.position = 'fixed';
+    overlay.style.zIndex = '9999';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+
+    const box = document.createElement('div');
+    box.className = 'custom-alert-box';
+
+    box.innerHTML = `
+        <span class="custom-alert-emoji">${emoji}</span>
+        <div class="custom-alert-message">${message}</div>
+        <button class="custom-alert-btn">OK</button>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    // Show alert with animation
+    setTimeout(() => overlay.classList.add('active'), 10);
+
+    // Close handler
+    const closeBtn = box.querySelector('.custom-alert-btn');
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 300);
+    });
+}
+
+// ================================
 // TOGGLE CART WINDOW
 // ================================
 function toggleCartWindow() {
@@ -169,6 +221,7 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
         addItemToCartUI(name, price, quantity, id);
         updateCartTotal();
         saveCartToLocalStorage();
+        showAlert(`${name} added to cart!`, "success");
     });
 });
 
@@ -194,16 +247,76 @@ document.querySelectorAll('.decrease-quantity').forEach(button => {
 // ================================
 // CHECKOUT → SEND TO FASTAPI
 // ================================
-document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
+// ================================
+// SHOW ORDER SUMMARY
+// ================================
+function showOrderSummary() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     if (cart.length === 0) {
-        alert("Your cart is empty!");
+        showAlert("Your cart is empty!", "warning");
         return;
     }
 
+    // Check login status first
+    fetch("/me").then(response => {
+        if (!response.ok) {
+            showAlert("Please login to checkout.", "warning");
+            const loginModal = new bootstrap.Modal(document.getElementById('login'));
+            loginModal.show();
+            return;
+        }
+
+        // Populate Summary Modal
+        const summaryItems = document.getElementById('orderSummaryItems');
+        let total = 0;
+        let html = '<ul class="list-group">';
+
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            html += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="my-0">${item.name}</h6>
+                        <small class="text-muted">Quantity: ${item.quantity} x $${item.price.toFixed(2)}</small>
+                    </div>
+                    <span class="text-muted">$${itemTotal.toFixed(2)}</span>
+                </li>
+            `;
+        });
+
+        html += '</ul>';
+        summaryItems.innerHTML = html;
+        document.getElementById('orderSummaryTotal').textContent = `$${total.toFixed(2)}`;
+
+        // Show Modal
+        const summaryModal = new bootstrap.Modal(document.getElementById('orderSummaryModal'));
+        summaryModal.show();
+
+        // Close Cart Window
+        const cartWindow = document.getElementById('cartWindow');
+        if (cartWindow) cartWindow.style.display = 'none';
+    });
+}
+
+// ================================
+// CHECKOUT → SHOW SUMMARY
+// ================================
+document.getElementById("checkoutBtn")?.addEventListener("click", showOrderSummary);
+
+// ================================
+// CONFIRM ORDER → SEND TO FASTAPI
+// ================================
+document.getElementById("confirmOrderBtn")?.addEventListener("click", async () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Close summary modal
+    const summaryModalEl = document.getElementById('orderSummaryModal');
+    const summaryModal = bootstrap.Modal.getInstance(summaryModalEl);
+
     const payload = {
-        user_id: 1,  // Replace with actual user ID
+        user_id: 0,
         items: cart.map(item => ({
             product_name: item.name,
             product_id: item.id,
@@ -222,17 +335,18 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
         const result = await response.json();
 
         if (response.ok) {
-            alert("Checkout completed!");
+            summaryModal.hide();
+            showAlert("Checkout successfully! 🎉", "success");
             document.getElementById('cartItems').innerHTML = "";
             document.getElementById('cartTotal').textContent = "$0.00";
             localStorage.removeItem("cart");
         } else {
-            alert("Checkout failed: " + JSON.stringify(result.detail));
+            showAlert("Checkout failed: " + (result.message || JSON.stringify(result.detail)), "error");
         }
 
     } catch (err) {
         console.error("Checkout error:", err);
-        alert("Error connecting to server.");
+        showAlert("Error connecting to server.", "error");
     }
 });
 
@@ -249,12 +363,12 @@ async function submitx() {
     formData.append("password", password);
 
     if (!email) {
-        document.getElementById("emailError").textContent = "Email is required";
+        document.getElementById("Error").textContent = "Email is required";
         return;
     }
 
     if (!password) {
-        document.getElementById("passwordError").textContent = "Password is required";
+        document.getElementById("Error").textContent = "Password is required";
         return;
     }
 
@@ -267,16 +381,19 @@ async function submitx() {
         const data = await response.json();
 
         if (response.ok) {
-            document.getElementById("userIcon").style.display = "block";
-            document.getElementById("userName").innerText = data.user_name;
-            const login_form = bootstrap.Modal.getInstance(document.getElementById('login'));
-            login_form.hide();
+            // Update UI
+            updateAuthUI(true, data.user_name);
+
+            // Close modal
+            const loginModalEl = document.getElementById('login');
+            const loginModal = bootstrap.Modal.getInstance(loginModalEl);
+            loginModal.hide();
         } else {
-            document.getElementById("Error").textContent = data.message;
+            document.getElementById("Error").textContent = data.message || "Login failed";
         }
 
     } catch (error) {
-        document.getElementById("passwordError").textContent = "Server connection error";
+        document.getElementById("Error").textContent = "Server connection error";
     }
 }
 
@@ -292,9 +409,142 @@ function go() {
 // ================================
 // PAGE LOAD
 // ================================
+// ================================
+// AUTH HELPERS
+// ================================
+function updateAuthUI(isLoggedIn, userName = "") {
+    const loginBtn = document.getElementById("log");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userIcon = document.getElementById("userIcon");
+    const userNameEl = document.getElementById("userName");
+
+    if (isLoggedIn) {
+        if (loginBtn) loginBtn.style.display = "none";
+        if (logoutBtn) logoutBtn.style.display = "inline-block";
+        if (userIcon) userIcon.style.display = "block";
+        if (userNameEl) userNameEl.innerText = userName;
+    } else {
+        if (loginBtn) loginBtn.style.display = "inline-block";
+        if (logoutBtn) logoutBtn.style.display = "none";
+        if (userIcon) userIcon.style.display = "none";
+        if (userNameEl) userNameEl.innerText = "";
+    }
+}
+
+async function checkLoginStatus() {
+    try {
+        const response = await fetch("/me");
+        if (response.ok) {
+            const data = await response.json();
+            updateAuthUI(true, data.user_name);
+        } else {
+            updateAuthUI(false);
+        }
+    } catch (error) {
+        console.error("Error checking login status:", error);
+        updateAuthUI(false);
+    }
+}
+
+async function logout() {
+    try {
+        await fetch("/logout", { method: "POST" });
+        updateAuthUI(false);
+        showAlert("👋 Logged out successfully!<br>See You Soon 😊", "wave");
+    } catch (error) {
+        console.error("Logout error:", error);
+    }
+}
+
+document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    logout();
+});
+
+// ================================
+// PROFILE MANAGEMENT
+// ================================
+async function openProfileModal() {
+    try {
+        const response = await fetch("/me");
+        if (!response.ok) {
+            showAlert("Please login to view profile.", "error");
+            return;
+        }
+        const data = await response.json();
+
+        document.getElementById('p_firstName').value = data.first_name || "";
+        document.getElementById('p_lastName').value = data.last_name || "";
+        document.getElementById('p_phone').value = data.phone || "";
+        document.getElementById('p_country').value = data.country || "";
+        document.getElementById('p_dob').value = data.dob || "";
+        document.getElementById('p_password').value = "";
+
+        const modalElement = document.getElementById('profileModal');
+        if (modalElement) {
+            const profileModal = new bootstrap.Modal(modalElement);
+            profileModal.show();
+        }
+
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        showAlert("Error loading profile data.", "error");
+    }
+}
+
+async function saveProfile() {
+    const formData = new FormData();
+    formData.append("first_name", document.getElementById('p_firstName').value);
+    formData.append("last_name", document.getElementById('p_lastName').value);
+    formData.append("phone", document.getElementById('p_phone').value);
+    formData.append("country", document.getElementById('p_country').value);
+    formData.append("dob", document.getElementById('p_dob').value);
+
+    const password = document.getElementById('p_password').value;
+    if (password) {
+        formData.append("password", password);
+    }
+
+    try {
+        const response = await fetch("/update-profile", {
+            method: "PUT",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showAlert("Profile updated successfully! 🎉", "success");
+            const profileModalEl = document.getElementById('profileModal');
+            const profileModal = bootstrap.Modal.getInstance(profileModalEl);
+            profileModal.hide();
+
+            if (result.user_name) {
+                document.getElementById("userName").innerText = result.user_name;
+            }
+        } else {
+            showAlert("Update failed: " + (result.message || "Unknown error"), "error");
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        showAlert("Error connecting to server.", "error");
+    }
+}
+
+const userIcon = document.getElementById("userIcon");
+if (userIcon) {
+    userIcon.addEventListener("click", (e) => {
+        e.preventDefault();
+        openProfileModal();
+    });
+}
+
+// ================================
+// PAGE LOAD
+// ================================
 window.addEventListener("load", () => {
     loadCartFromStorage();
-
+    checkLoginStatus();
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('modify') === 'true') {
         document.getElementById('userIcon').style.display = 'block';

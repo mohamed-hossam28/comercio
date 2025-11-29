@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comercio</title>
-    <link rel="stylesheet" href="style/web.css">
+    <link rel="stylesheet" href="style/web.css?v={{ timestamp }}">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -61,6 +61,7 @@
                     </li>
                 </ul>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
+                <a href="#" class="btn text-white" id="logoutBtn" style="display:none;">Logout</a>
                 <button class="p-3" id="cart" onclick="display()"><i class="fa-solid fa-cart-shopping"></i></button>
 
                 <a class="nav-link" href="#" id="userIcon" style="display:none;">
@@ -77,27 +78,32 @@
     </nav>
 
     <!-- Cart Window -->
-    <div class="cart-window" id="cartWindow">
-        <div class="cart-window-header">
-            <div class="text-black" id="cartwindowheader">
-                <span>Shopping Cart</span>
+    <div class="cart-window" id="cartWindow" aria-hidden="true">
+        <header class="cart-header">
+            <div class="cart-title">
+                <h3>Shopping Cart</h3>
+                <span class="cart-count" id="cartCount" aria-live="polite">0</span>
             </div>
-            <button class="btn btn-sm btn-danger" onclick="toggleCartWindow()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <div class="cart-controls">
+                <button class="btn btn-clear" onclick="toggleCartWindow()" aria-label="Close cart"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+        </header>
+
+        <div class="cart-body" id="cartItems" role="list">
+            <!-- JS injects items here as elements with class="cart-item" -->
         </div>
 
-        <div class="cart-window-body" id="cartItems"></div>
-
-        <div class="cart-total">
-            <span>Total:</span>
-            <span id="cartTotal">$0.00</span>
-        </div>
-
-        <div class="cart-checkout text-center p-3">
-            <button id="checkoutBtn" class="btn btn-checkout w-100"><i class="fa-solid fa-credit-card"></i>
-                Checkout</button>
-        </div>
+        <footer class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-label">Total</div>
+                <div class="summary-value" id="cartTotal">$0.00</div>
+            </div>
+            <div class="cart-actions">
+                <button id="checkoutBtn" class="btn btn-checkout"><i class="fa-solid fa-credit-card"></i>
+                    Checkout</button>
+            </div>
+        </footer>
     </div>
 
     <!-- Login Modal -->
@@ -133,6 +139,77 @@
                 </div>
                 <div class="modal-footer" style="justify-content:center;">
                     <button type="button" onclick="submitx()" class="submit" id="Submitx">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="p_firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="p_firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="p_lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="p_phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="p_country">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="p_dob">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_password" class="form-label">New Password (leave blank to keep
+                                current)</label>
+                            <input type="password" class="form-control" id="p_password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Summary Modal -->
+    <div class="modal fade" id="orderSummaryModal" tabindex="-1" aria-labelledby="orderSummaryLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderSummaryLabel">Order Summary</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="orderSummaryItems">
+                        <!-- Items will be injected here -->
+                    </div>
+                    <div class="text-end mt-3">
+                        <h5>Total: <span id="orderSummaryTotal">$0.00</span></h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmOrderBtn"
+                        style="background-color: hsl(178, 63%, 51%); border: none; color: black;">Confirm
+                        Order</button>
                 </div>
             </div>
         </div>
