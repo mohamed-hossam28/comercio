@@ -27,7 +27,9 @@ async def read_root(request: Request):
 @app.get("/Register")
 async def read_registration(request: Request):
     return templates.TemplateResponse("RegistrationForm.html", {"request": request})
-
+@app.get("/FQA")
+async def read_registration(request: Request):
+    return templates.TemplateResponse("FQA.html", {"request": request})
 
 app.include_router(users.users_router)
 app.include_router(order.order_router)
