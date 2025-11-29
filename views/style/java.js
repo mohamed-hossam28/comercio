@@ -1,4 +1,56 @@
 // ================================
+// GET PRODUCTS
+// ================================
+async function loadCategorizedProducts() {
+    const container = document.getElementById('products_container');
+
+    try {
+        // 1. Fetch the grouped data
+        const response = await fetch('http://127.0.0.1:8000/products/grouped');
+        const data = await response.json();
+
+        container.innerHTML = '';
+
+        // 2. Loop through the Categories (Keys)
+        for (const [categoryName, products] of Object.entries(data)) {
+
+            // A. Create the HTML for the products inside this category
+            let cardsHTML = '';
+            products.forEach(p => {
+                cardsHTML += `
+                            <div class="card">
+                                <img src="${p.image_url}" alt="${p.name}">
+                                <h3>${p.name}</h3>
+                                <p class="price">$${p.price}</p>
+                                <button>Add to Cart</button>
+                            </div>
+                        `;
+            });
+
+            // B. Create the Full Section (Title + Grid)
+            const sectionHTML = `
+                        <div class="category-section">
+                            <h2 class="category-title">${categoryName}</h2>
+                            <div class="product-grid">
+                                ${cardsHTML}
+                            </div>
+                        </div>
+                        <hr style="width: 50%; opacity: 0.3;">
+                    `;
+
+            // C. Add to page
+            container.innerHTML += sectionHTML;
+        }
+
+    } catch (error) {
+        console.error("Error loading products:", error);
+    }
+}
+
+loadCategorizedProducts();
+
+
+// ================================
 // TOGGLE CART WINDOW
 // ================================
 function toggleCartWindow() {
@@ -248,3 +300,5 @@ window.addEventListener("load", () => {
         document.getElementById('userIcon').style.display = 'block';
     }
 });
+
+
