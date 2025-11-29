@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import get_db
@@ -20,6 +21,9 @@ class ProductSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class PurchaseRequest(BaseModel):
+    quantity: int
+
 @products_router.get("/products/grouped", response_model=Dict[str, List[ProductSchema]])
 def get_products(db: Session = Depends(get_db), limit: int = 4):
     products = db.query(Product).all()
@@ -30,4 +34,20 @@ def get_products(db: Session = Depends(get_db), limit: int = 4):
             grouped_data[category].append(product)
 
     return grouped_data
+
+@products_router.post("/products/{product_id}/purchase", status_code=status.HTTP_200_OK)
+def purchase_product(product_id: int, request: PurchaseRequest, db: Session = Depends(get_db)):
+    product = db.query(Product).filter(Product.id == product_id).first()
+    
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    if product.stock_avilabilty < request.quantity:
+        raise HTTPException(status_code=400, detail="Insufficient stock")
+    
+    product.stock_avilabilty -= request.quantity
+    db.commit()
+    db.refresh(product)
+    
+    return {"message": "Purchase successful", "new_stock": product.stock_avilabilty}
 
