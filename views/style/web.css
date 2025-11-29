@@ -458,14 +458,9 @@ input[type="password"] {
     ;
 }
 
-#footer-bottom {
-    color: white;
-    background-color: hsl(214, 27%, 10%);
-}
-
 #Clothes,
 #Electronic,
-#cosmetics {
+#Cosmetics {
     display: flex;
     justify-content: center;
     align-items: center;
