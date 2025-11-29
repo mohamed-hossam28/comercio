@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import get_db
 from models.order import OrderDetails, OrderItem
+from models.users import User
+from fastapi.responses import JSONResponse
+from fastapi import status
+import auth
 
 order_router = APIRouter(prefix="/order", tags=["order"])
 
@@ -20,9 +24,15 @@ class CheckoutRequest(BaseModel):
 
 
 @order_router.post("/checkout")
-def checkout(data: CheckoutRequest, db: Session = Depends(get_db)):
+def checkout(data: CheckoutRequest, request: Request, db: Session = Depends(get_db)):
+    # Authenticate using session cookie (server-side)
+    token = request.cookies.get("session_token")
+    user_id = auth.get_user_id_from_token(token)
+    if not user_id:
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "You must be logged in to checkout."})
 
-    new_order_detail = OrderDetails(user_id=data.user_id)
+    # Ignore client-supplied user_id; use authenticated user_id
+    new_order_detail = OrderDetails(user_id=user_id)
     db.add(new_order_detail)
     db.flush()  # <-- generates new_order_detail.id before adding items
 
