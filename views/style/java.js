@@ -573,7 +573,7 @@ async function saveProfile() {
         form.reportValidity();  
     }
 
-    alert("Profile updated successfully!");
+
     const password = document.getElementById('p_password').value;
     if (password) {
         formData.append("password", password);
