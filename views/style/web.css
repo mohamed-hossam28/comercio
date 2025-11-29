@@ -1066,3 +1066,7 @@ input[type="password"] {
     transform: rotate(-15deg);
     pointer-events: none;
 }
+
+#footer{
+    background-color: hsl(214, 27%, 10%);
+}  
