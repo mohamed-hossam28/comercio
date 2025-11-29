@@ -15,65 +15,85 @@ async function loadCategorizedProducts() {
         for (const [category, products] of Object.entries(groupedProducts)) {
             // Create category section
             const categorySection = document.createElement('section');
-            categorySection.className = 'categories mt-4';
+            categorySection.className = 'carousel-section';
+            categorySection.id = category; // For anchor linking
 
             // Category Title
-            const title = document.createElement('h1');
-            title.id = category;
+            const title = document.createElement('h2');
+            title.className = 'category-title';
             title.textContent = category;
-            container.appendChild(title);
+            categorySection.appendChild(title);
 
-            // Row for products
-            const row = document.createElement('div');
-            row.className = 'row';
+            // Carousel Container
+            const carouselContainer = document.createElement('div');
+            carouselContainer.className = 'carousel-container';
+
+            // Only show buttons if more than 3 products
+            if (products.length > 3) {
+                // Left Button
+                const leftBtn = document.createElement('button');
+                leftBtn.className = 'scroll-btn left';
+                leftBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+                leftBtn.onclick = () => scrollCarousel(carouselContainer, 'left');
+                carouselContainer.appendChild(leftBtn);
+            }
+
+            // Scrollable Product Container
+            const scrollContainer = document.createElement('div');
+            scrollContainer.className = 'product-scroll-container';
 
             products.forEach(product => {
-                const col = document.createElement('div');
-                col.className = 'col-md-4 pb-4';
+                // Backend has a typo: stock_avilabilty
+                const stockCount = product.stock_avilabilty !== undefined ? product.stock_avilabilty : 0;
+                const isOutOfStock = stockCount === 0;
+                const lowStock = !isOutOfStock && stockCount < 5;
 
-                const isOutOfStock = product.stock_avilabilty === 0;
-                const stockBadge = isOutOfStock
-                    ? '<span class="badge bg-danger position-absolute top-0 end-0 m-3">Out of Stock</span>'
-                    : '';
-                const buttonDisabled = isOutOfStock ? 'disabled' : '';
-                const buttonText = isOutOfStock ? 'Out of Stock' : 'Add to Cart';
-                const quantityControlsStyle = isOutOfStock ? 'display: none;' : '';
+                const stockClass = isOutOfStock ? 'out-of-stock' : (lowStock ? 'low-stock' : '');
+                const stockText = isOutOfStock ? 'Sold Out' : `In Stock: ${stockCount}`;
 
-                col.innerHTML = `
-                    <div class="card h-100">
-                        ${stockBadge}
-                        <img class="card-img-top p-3" src="${product.image_url}" alt="${product.name}" style="height: 300px; object-fit: contain;">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">${product.name}</h5>
-                            <p class="card-text">$${product.price.toFixed(2)}</p>
-                            ${product.description ? `<p class="card-text small text-muted">${product.description}</p>` : ''}
-                            <div class="mt-auto">
-                                <div class="cardbody">
-                                    <button class="btn btn-primary add-to-cart w-100 mb-2" 
-                                        data-id="${product.id}" 
-                                        data-item="${product.name}" 
-                                        data-price="${product.price}"
-                                        ${buttonDisabled}>
-                                        ${buttonText}
-                                    </button>
-                                    <div class="quantity-controls justify-content-center" style="${quantityControlsStyle}">
-                                        <button class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
-                                        <input type="number" class="quantity-input mx-2" value="1" min="1" style="width: 50px; text-align: center;">
-                                        <button class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                card.innerHTML = `
+                    ${isOutOfStock ? '<div class="sold-out-overlay">Sold Out</div>' : ''}
+                    <img class="product-image" src="${product.image_url}" alt="${product.name}">
+                    <div class="product-details">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <div class="stock-info ${stockClass}">${stockText}</div>
+                        
+                        ${!isOutOfStock ? `
+                        <div class="quantity-control">
+                            <span class="quantity-label">Qty:</span>
+                            <input type="number" class="qty-input" value="1" min="1" max="${stockCount}" 
+                                onchange="validateQuantity(this, ${stockCount})">
                         </div>
+                        ` : ''}
+
+                        <button class="add-btn" 
+                            ${isOutOfStock ? 'disabled' : ''}
+                            onclick="addToCartWithValidation(this, ${product.id}, '${product.name}', ${product.price}, ${stockCount})">
+                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                        </button>
                     </div>
                 `;
-                row.appendChild(col);
+                scrollContainer.appendChild(card);
             });
 
-            categorySection.appendChild(row);
+            carouselContainer.appendChild(scrollContainer);
+
+            if (products.length > 3) {
+                // Right Button
+                const rightBtn = document.createElement('button');
+                rightBtn.className = 'scroll-btn right';
+                rightBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+                rightBtn.onclick = () => scrollCarousel(carouselContainer, 'right');
+                carouselContainer.appendChild(rightBtn);
+            }
+
+            categorySection.appendChild(carouselContainer);
             container.appendChild(categorySection);
         }
-
-        attachProductEventListeners();
 
     } catch (error) {
         console.error('Error loading products:', error);
@@ -167,30 +187,11 @@ async function addToCartWithValidation(btn, id, name, price, maxStock) {
         }
 
         addToCart(id, name, price, quantity);
-    });
-});
-
-// Quantity Controls
-document.querySelectorAll('.increase-quantity').forEach(button => {
-    button.addEventListener('click', function () {
-        const input = this.parentElement.querySelector('.quantity-input');
-        input.value = parseInt(input.value) + 1;
-    });
-});
-
-document.querySelectorAll('.decrease-quantity').forEach(button => {
-    button.addEventListener('click', function () {
-        const input = this.parentElement.querySelector('.quantity-input');
-        if (parseInt(input.value) > 1) {
-            input.value = parseInt(input.value) - 1;
-        }
-    });
-});
 
     } catch (error) {
-    console.error('Purchase error:', error);
-    showAlert(error.message, "error");
-}
+        console.error('Purchase error:', error);
+        showAlert(error.message, "error");
+    }
 }
 
 // ================================
@@ -616,15 +617,6 @@ async function saveProfile() {
     formData.append("phone", document.getElementById('p_phone').value);
     formData.append("country", document.getElementById('p_country').value);
     formData.append("dob", document.getElementById('p_dob').value);
-    const form = document.getElementById("profileForm");
-
-    // ⬅ ده بيخلي المتصفح يشيّك على كل pattern + required
-    if (!form.checkValidity()) {
-        form.reportValidity();  // يظهر رسائل الخطأ على كل input
-        return; // ❌ ما يحفظش لو في غلط
-    }
-
-    // لو كله صح تنفذ بقى اللي انت عايزه
 
     const password = document.getElementById('p_password').value;
     if (password) {

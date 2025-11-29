@@ -148,101 +148,49 @@
     </div>
 
     <!-- Profile Modal -->
-  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="p_firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="p_firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="p_lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="p_phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="p_country">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="p_dob">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p_password" class="form-label">New Password (leave blank to keep
+                                current)</label>
+                            <input type="password" class="form-control" id="p_password">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <form id="profileForm">
-
-                    <!-- First Name -->
-                    <div class="mb-3">
-                        <label for="p_firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="p_firstName"
-                            pattern="^[A-Za-z]{3,}$"
-                            title="Only letters, minimum 3 characters" required>
-                    </div>
-
-                    <!-- Last Name -->
-                    <div class="mb-3">
-                        <label for="p_lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="p_lastName"
-                            pattern="^[A-Za-z]{3,}$"
-                            title="Only letters, minimum 3 characters" required>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="mb-3">
-                        <label for="p_phone" class="form-label">Phone</label>
-                        <input type="tel" class="form-control" id="p_phone"
-                            pattern="^(010|011|012|015)\d{8}$"
-                            title="Valid Egyptian phone number (e.g., 01012345678)" required>
-                    </div>
-
-                    <!-- Country -->
-                    <div class="mb-3">
-                        <label for="p_country" class="form-label">City</label>
-                        <select class="form-control" id="p_country" required>
-                            <option value="">-- Select City --</option>
-                            <option value="cairo">Cairo</option>
-                            <option value="giza">Giza</option>
-                            <option value="alexandria">Alexandria</option>
-                            <option value="qalyubia">Qalyubia</option>
-                            <option value="beheira">Beheira</option>
-                            <option value="matrouh">Matrouh</option>
-                            <option value="dakahlia">Dakahlia</option>
-                            <option value="sharqia">Sharqia</option>
-                            <option value="gharbia">Gharbia</option>
-                            <option value="kafr_elsheikh">Kafr El-Sheikh</option>
-                            <option value="damietta">Damietta</option>
-                            <option value="monufia">Monufia</option>
-                            <option value="portsaid">Port Said</option>
-                            <option value="suez">Suez</option>
-                            <option value="ismailia">Ismailia</option>
-                            <option value="beni_suef">Beni Suef</option>
-                            <option value="fayoum">Fayoum</option>
-                            <option value="minya">Minya</option>
-                            <option value="assiut">Assiut</option>
-                            <option value="sohag">Sohag</option>
-                            <option value="qena">Qena</option>
-                            <option value="luxor">Luxor</option>
-                            <option value="aswan">Aswan</option>
-                            <option value="north_sinai">North Sinai</option>
-                            <option value="south_sinai">South Sinai</option>
-                            <option value="red_sea">Red Sea</option>
-                            <option value="new_valley">New Valley</option>
-                        </select>
-                    </div>
-
-                    <!-- Date of Birth -->
-                    <div class="mb-3">
-                        <label for="p_dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="p_dob" required>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="mb-3">
-                        <label for="p_password" class="form-label">New Password (optional)</label>
-                        <input type="password" class="form-control" id="p_password"
-                            pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
-                            title="Min 8 chars, uppercase, lowercase, number, special character">
-                    </div>
-
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveProfile()">Save changes</button>
-            </div>
-
         </div>
     </div>
-</div>
 
     <!-- Order Summary Modal -->
     <div class="modal fade" id="orderSummaryModal" tabindex="-1" aria-labelledby="orderSummaryLabel" aria-hidden="true">
