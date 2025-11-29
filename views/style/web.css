@@ -435,7 +435,7 @@ input[type="password"] {
 }
 
 .landing {
-
+    height: 100vh;
     background-color: #1A2940;
     min-height: calc(100vh - 130px);
 }
