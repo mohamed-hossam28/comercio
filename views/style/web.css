@@ -452,7 +452,6 @@ input[type="password"] {
     padding-top: 50px;
 }
 
-.footer {}
 
 .categories-item:hover {
     color: hsl(178, 63%, 41%);
@@ -1067,6 +1066,6 @@ input[type="password"] {
     pointer-events: none;
 }
 
-#footer{
+#footer {
     background-color: hsl(214, 27%, 10%);
-}  
+}

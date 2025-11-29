@@ -130,7 +130,7 @@ function validateQuantity(input, maxStock) {
     }
 }
 
-function addToCartWithValidation(btn, id, name, price, maxStock) {
+async function addToCartWithValidation(btn, id, name, price, maxStock) {
     const card = btn.closest('.product-details');
     const qtyInput = card.querySelector('.qty-input');
     const quantity = parseInt(qtyInput.value);
@@ -141,7 +141,57 @@ function addToCartWithValidation(btn, id, name, price, maxStock) {
         return;
     }
 
-    addToCart(id, name, price, quantity);
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/products/${id}/purchase`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantity: quantity })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Purchase failed');
+        }
+
+        const result = await response.json();
+        const newStock = result.new_stock;
+
+        // Update UI
+        const stockInfo = card.querySelector('.stock-info');
+        if (newStock === 0) {
+            stockInfo.textContent = 'Sold Out';
+            stockInfo.className = 'stock-info out-of-stock';
+            btn.disabled = true;
+            btn.textContent = 'Sold Out';
+            card.querySelector('.quantity-control').style.display = 'none';
+
+            // Add overlay
+            const productCard = card.closest('.product-card');
+            if (!productCard.querySelector('.sold-out-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.className = 'sold-out-overlay';
+                overlay.textContent = 'Sold Out';
+                productCard.insertBefore(overlay, productCard.firstChild);
+            }
+        } else {
+            stockInfo.textContent = `In Stock: ${newStock}`;
+            if (newStock < 5) {
+                stockInfo.className = 'stock-info low-stock';
+            }
+            // Update max attribute for input
+            qtyInput.max = newStock;
+            // Update onclick handler with new maxStock
+            btn.setAttribute('onclick', `addToCartWithValidation(this, ${id}, '${name}', ${price}, ${newStock})`);
+        }
+
+        addToCart(id, name, price, quantity);
+
+    } catch (error) {
+        console.error('Purchase error:', error);
+        showAlert(error.message, "error");
+    }
 }
 
 // ================================
