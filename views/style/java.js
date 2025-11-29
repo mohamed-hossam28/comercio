@@ -538,7 +538,13 @@ async function saveProfile() {
     formData.append("phone", document.getElementById('p_phone').value);
     formData.append("country", document.getElementById('p_country').value);
     formData.append("dob", document.getElementById('p_dob').value);
+        const form = document.getElementById("profileForm");
 
+    if (!form.checkValidity()) {
+        form.reportValidity();  
+    }
+
+    alert("Profile updated successfully!");
     const password = document.getElementById('p_password').value;
     if (password) {
         formData.append("password", password);
