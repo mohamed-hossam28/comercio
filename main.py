@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import database
 from routers import users, order
+import time
 
 app = FastAPI()
 
@@ -21,7 +22,7 @@ templates = Jinja2Templates(directory="views")
 
 @app.get("/")
 async def read_root(request: Request):
-    return templates.TemplateResponse("Web.html", {"request": request})
+    return templates.TemplateResponse("Web.html", {"request": request, "timestamp": int(time.time())})
 
 @app.get("/Register")
 async def read_registration(request: Request):
