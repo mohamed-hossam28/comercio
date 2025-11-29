@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import database
-from routers import users, order
+from routers import users, order, products
 import time
 
 app = FastAPI()
@@ -31,3 +31,4 @@ async def read_registration(request: Request):
 
 app.include_router(users.users_router)
 app.include_router(order.order_router)
+app.include_router(products.products_router)

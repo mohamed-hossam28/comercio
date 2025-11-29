@@ -3,52 +3,117 @@
 // ================================
 async function loadCategorizedProducts() {
     const container = document.getElementById('products_container');
+    if (!container) return;
 
     try {
-        // 1. Fetch the grouped data
         const response = await fetch('http://127.0.0.1:8000/products/grouped');
-        const data = await response.json();
+        if (!response.ok) throw new Error('Failed to fetch products');
 
-        container.innerHTML = '';
+        const groupedProducts = await response.json();
+        container.innerHTML = ''; // Clear existing content
 
-        // 2. Loop through the Categories (Keys)
-        for (const [categoryName, products] of Object.entries(data)) {
+        for (const [category, products] of Object.entries(groupedProducts)) {
+            // Create category section
+            const categorySection = document.createElement('section');
+            categorySection.className = 'categories mt-4';
 
-            // A. Create the HTML for the products inside this category
-            let cardsHTML = '';
-            products.forEach(p => {
-                cardsHTML += `
-                            <div class="card">
-                                <img src="${p.image_url}" alt="${p.name}">
-                                <h3>${p.name}</h3>
-                                <p class="price">$${p.price}</p>
-                                <button>Add to Cart</button>
-                            </div>
-                        `;
-            });
+            // Category Title
+            const title = document.createElement('h1');
+            title.id = category;
+            title.textContent = category;
+            container.appendChild(title);
 
-            // B. Create the Full Section (Title + Grid)
-            const sectionHTML = `
-                        <div class="category-section">
-                            <h2 class="category-title">${categoryName}</h2>
-                            <div class="product-grid">
-                                ${cardsHTML}
+            // Row for products
+            const row = document.createElement('div');
+            row.className = 'row';
+
+            products.forEach(product => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 pb-4';
+
+                const isOutOfStock = product.stock_avilabilty === 0;
+                const stockBadge = isOutOfStock
+                    ? '<span class="badge bg-danger position-absolute top-0 end-0 m-3">Out of Stock</span>'
+                    : '';
+                const buttonDisabled = isOutOfStock ? 'disabled' : '';
+                const buttonText = isOutOfStock ? 'Out of Stock' : 'Add to Cart';
+                const quantityControlsStyle = isOutOfStock ? 'display: none;' : '';
+
+                col.innerHTML = `
+                    <div class="card h-100">
+                        ${stockBadge}
+                        <img class="card-img-top p-3" src="${product.image_url}" alt="${product.name}" style="height: 300px; object-fit: contain;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">$${product.price.toFixed(2)}</p>
+                            ${product.description ? `<p class="card-text small text-muted">${product.description}</p>` : ''}
+                            <div class="mt-auto">
+                                <div class="cardbody">
+                                    <button class="btn btn-primary add-to-cart w-100 mb-2" 
+                                        data-id="${product.id}" 
+                                        data-item="${product.name}" 
+                                        data-price="${product.price}"
+                                        ${buttonDisabled}>
+                                        ${buttonText}
+                                    </button>
+                                    <div class="quantity-controls justify-content-center" style="${quantityControlsStyle}">
+                                        <button class="btn btn-secondary decrease-quantity"><i class="fa-solid fa-chevron-down"></i></button>
+                                        <input type="number" class="quantity-input mx-2" value="1" min="1" style="width: 50px; text-align: center;">
+                                        <button class="btn btn-secondary increase-quantity"><i class="fa-solid fa-chevron-up"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <hr style="width: 50%; opacity: 0.3;">
-                    `;
+                    </div>
+                `;
+                row.appendChild(col);
+            });
 
-            // C. Add to page
-            container.innerHTML += sectionHTML;
+            categorySection.appendChild(row);
+            container.appendChild(categorySection);
         }
 
+        attachProductEventListeners();
+
     } catch (error) {
-        console.error("Error loading products:", error);
+        console.error('Error loading products:', error);
+        container.innerHTML = '<div class="alert alert-danger">Failed to load products. Please try again later.</div>';
     }
 }
 
-loadCategorizedProducts();
+function attachProductEventListeners() {
+    // Add to Cart Buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function () {
+            if (this.disabled) return;
 
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-item');
+            const price = parseFloat(this.getAttribute('data-price'));
+            const quantityInput = this.parentElement.querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value);
+
+            addToCart(id, name, price, quantity);
+        });
+    });
+
+    // Quantity Controls
+    document.querySelectorAll('.increase-quantity').forEach(button => {
+        button.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('.quantity-input');
+            input.value = parseInt(input.value) + 1;
+        });
+    });
+
+    document.querySelectorAll('.decrease-quantity').forEach(button => {
+        button.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('.quantity-input');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        });
+    });
+}
 
 // ================================
 // CUSTOM ALERT FUNCTION
@@ -207,41 +272,15 @@ function addItemToCartUI(name, price, quantity, id) {
     });
 }
 
-
 // ================================
-// ADD TO CART BUTTONS
+// ADD TO CART WRAPPER
 // ================================
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', (e) => {
-        const name = e.target.dataset.item;
-        const id = e.target.dataset.id;
-        const price = parseFloat(e.target.dataset.price);
-        const quantity = parseInt(e.target.parentElement.querySelector('.quantity-input').value);
-
-        addItemToCartUI(name, price, quantity, id);
-        updateCartTotal();
-        saveCartToLocalStorage();
-        showAlert(`${name} added to cart!`, "success");
-    });
-});
-
-
-// ================================
-// PRODUCT QUANTITY BUTTONS
-// ================================
-document.querySelectorAll('.increase-quantity').forEach(button => {
-    button.addEventListener('click', () => {
-        const q = button.parentElement.querySelector('.quantity-input');
-        q.value = parseInt(q.value) + 1;
-    });
-});
-
-document.querySelectorAll('.decrease-quantity').forEach(button => {
-    button.addEventListener('click', () => {
-        const q = button.parentElement.querySelector('.quantity-input');
-        if (q.value > 1) q.value = parseInt(q.value) - 1;
-    });
-});
+function addToCart(id, name, price, quantity) {
+    addItemToCartUI(name, price, quantity, id);
+    updateCartTotal();
+    saveCartToLocalStorage();
+    showAlert(`${name} added to cart!`, "success");
+}
 
 
 // ================================
@@ -543,6 +582,7 @@ if (userIcon) {
 // PAGE LOAD
 // ================================
 window.addEventListener("load", () => {
+    loadCategorizedProducts();
     loadCartFromStorage();
     checkLoginStatus();
     const urlParams = new URLSearchParams(window.location.search);
