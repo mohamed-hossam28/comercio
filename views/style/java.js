@@ -151,7 +151,7 @@ document.getElementById("checkoutBtn")?.addEventListener("click", async () => {
     }
 
     const payload = {
-        user_id: 1,
+        user_id: 1,  // Replace with actual user ID
         items: cart.map(item => ({
             product_name: item.name,
             product_id: item.id,
