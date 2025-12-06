@@ -1,7 +1,14 @@
 body {
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
+#saveProfileBtn:hover {
+    color: hsl(178, 68%, 25%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(72, 202, 228, 0.4);
+}
 .header {
     background-size: cover;
     background-position: center;
@@ -9,6 +16,21 @@ body {
     color: white;
     padding: 100px 0;
 }
+
+.icon-wrapper {
+    transition: transform 0.3s ease;
+    color: hsl(178, 63%, 41%);
+}
+
+.icon-wrapper:hover {
+    transform: scale(1.2);
+    color: hsl(178, 68%, 25%);
+}
+
+
+
+
+
 
 .cart-checkout {
     padding: 15px 20px;
@@ -239,6 +261,10 @@ input[type="password"] {
     font-size: 14px;
 }
 
+.cart-window.active {
+    display: block;
+}
+
 .cart-header {
     display: flex;
     justify-content: space-between;
@@ -454,8 +480,8 @@ input[type="password"] {
 
 .categories-item {
     color: hsl(178, 63%, 41%);
-
 }
+
 .categories-item:hover {
     color: hsl(178, 68%, 25%);
 
@@ -500,215 +526,24 @@ input[type="password"] {
     color: #b1b1b1;
 
 }
+
 #h:hover {
-    color:hsl(178, 63%, 41%);
+    color: hsl(178, 63%, 41%);
 
 }
+
 #rei:hover {
-    color:hsl(178, 63%, 41%);
+    color: hsl(178, 63%, 41%);
 
 }
+
 #sigo:hover {
-    color:hsl(178, 63%, 41%);
+    color: hsl(178, 63%, 41%);
 
 }
+
 #faq:hover {
-    color:hsl(178, 63%, 41%);
-
-}
-
-#item {
-    width: 120px;
-    display: inline-block;
-}
-
-#inpu {
-    width: 60px;
-    padding: 2px;
-    height: 40px;
-    padding-bottom: 9px;
-    font-size: larger;
-    border-radius: 4px;
-}
-
-#up,
-#down {
-    color: #fff;
-    background-color: hsl(190, 47%, 55%);
-    height: 40px;
-}
-
-#Addcart {
-    border: 1px solid #6C757D;
-    height: 40px;
-    left: 300px;
-    background-color: hsl(190, 47%, 55%);
-
-}
-
-#up:hover,
-#down:hover {
-    background-color: hsl(190, 91%, 68%);
-}
-
-#Addcart:hover {
-    background-color: hsl(190, 91%, 68%);
-}
-
-#Addcart:active {
-    background-color: rgb(99, 190, 255);
-}
-
-#up:active,
-#down:active {
-    background-color: rgb(99, 190, 255);
-}
-
-#Addcart:focus {
-    box-shadow: none;
-}
-
-#up:focus,
-#down:focus {
-    box-shadow: none;
-}
-
-.cardbody {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.add-to-cart {
-    margin-right: auto;
-}
-
-.quantity-controls {
-    display: flex;
-    align-items: center;
-}
-
-.quantity-controls button {
-    margin: 0 5px;
-}
-
-.quantity-input {
-    width: 50px;
-    text-align: center;
-}
-
-#Addcart.focused {
-    background-color: #1A2940;
-    box-shadow: none;
-}
-
-.error {
-    color: red;
-    font-size: 12px;
-    margin-top: 3px;
-    display: block;
-    text-align: center;
-    align-items: center;
-    margin-bottom: 15px;
-    font-size: medium;
-}
-
-/* Custom Alert Modal */
-.custom-alert-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.custom-alert-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.custom-alert-box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    transform: scale(0.7);
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.custom-alert-overlay.active .custom-alert-box {
-    transform: scale(1);
-}
-
-.custom-alert-emoji {
-    font-size: 4rem;
-    margin-bottom: 15px;
-    display: block;
-    animation: bounce 1s infinite;
-}
-
-.custom-alert-message {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 25px;
-    font-weight: 500;
-}
-
-.custom-alert-btn {
-    background: hsl(178, 63%, 51%);
-    color: black;
-    border: none;
-    padding: 10px 30px;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.custom-alert-btn:hover {
-    background: hsl(178, 63%, 41%);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-
-#l:hover {
-    color: rgb(8, 111, 184);
-}
-
-#y:hover {
-    color: rgb(184, 48, 48);
-}
-
-#h,
-#rei,
-#sigo,
-#faq {
-    color: #b1b1b1;
+    color: hsl(178, 63%, 41%);
 
 }
 
@@ -898,20 +733,19 @@ input[type="password"] {
     color: hsl(178, 63%, 51%);
 }
 
-/* Carousel & Stock Validation Styles */
+
 
 .carousel-section {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     position: relative;
-    padding: 0 20px 40px 20px;
+    /* padding: 0 20px 40px 20px; */
     border-bottom: 1px solid #eee;
 }
 
 .category-title {
     font-family: 'Parisienne', cursive;
     font-size: 3rem;
-    color: hsl(178, 63%, 41%);
-    margin-bottom: 30px;
+    color: #1A2940;
     text-align: center;
     display: block;
     width: 100%;
@@ -926,7 +760,6 @@ input[type="password"] {
 .product-scroll-container {
     display: flex;
     overflow-x: auto;
-    scroll-behavior: smooth;
     gap: 20px;
     padding: 20px 5px;
     width: 100%;
@@ -1050,13 +883,13 @@ input[type="password"] {
     margin-top: auto;
     width: 100%;
     padding: 10px;
-    background-color: hsl(178, 63%, 51%);
+    background-color: hsl(178, 100%, 38%);
     color: white;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
+    transition:0.3s;
 }
 
 .add-btn:hover {
@@ -1087,4 +920,93 @@ input[type="password"] {
 
 #footer {
     background-color: hsl(214, 27%, 10%);
+    margin-top: auto;
+}
+
+/* =========================================
+   Right-Aligned Off-Canvas Drawer (Modal)
+   ========================================= */
+.modal.drawer-right .modal-dialog {
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    max-width: 450px;
+    /* Desired width */
+    height: 100%;
+    right: 0;
+    top: 0;
+    transform: translate3d(100%, 0, 0);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.modal.drawer-right.show .modal-dialog {
+    transform: translate3d(0, 0, 0);
+}
+
+.modal.drawer-right .modal-content {
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal.drawer-right .modal-body {
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+.modal.drawer-right .modal-footer {
+    flex: 0 0 auto;
+}
+
+/* Modern Input Styling */
+.modern-input {
+    border: 2px solid #eef2f6;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.modern-input:focus {
+    background-color: #fff;
+    border-color: #0d6efd;
+    /* Primary Blue */
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    outline: none;
+}
+
+.modern-input::placeholder {
+    color: #a0aec0;
+}
+
+/* Drawer Label Styling */
+.modal.drawer-right .form-label {
+    font-size: 0.85rem;
+}
+
+/* Button Styling */
+.btn-primary {
+    transition: all 0.2s ease;
+    background-color: hsl(178deg 61.21% 48.95%);
+    border-color: hsl(178deg 61.21% 48.95%);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+    background-color: hsl(178deg 61.21% 40%);
+    border-color: hsl(178deg 61.21% 40%);
+}
+
+.btn-link:hover {
+    color: hsl(178deg 61.21% 48.95%) !important;
+}
+
+.modal.drawer-right .modal-title {
+    font-size: 1.25rem;
 }

@@ -22,29 +22,40 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+
     <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
-            <a class="navbar-brand logo" href="#">
-                <img class="fa-0x" src="images/logo.png" alt="" width="150px">
+
+        <div class="container-fluid px-4">
+
+            <a class="navbar-brand logo me-4" href="#">
+                <img src="images/logo.png" alt="Comercio Logo" height="40">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main"
-                aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="se">
-                <button class="btn btn-outline-success" type="submit" id="searchbn">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
-            <div class="collapse navbar-collapse" id="main">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+            <div class="collapse navbar-collapse" id="mainMenu">
+
+                <form class="d-flex me-lg-auto my-2 my-lg-0" style="flex-grow: 1; max-width: 500px;">
+
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="se"
+                        style="border-radius: 20px 0 0 20px;">
+                    <button class="btn btn-light bg-white border-start-0" type="submit" id="searchbn"
+                        style="border-radius: 0 20px 20px 0; color: #1a253c; border: 1px solid #ced4da;"> <i
+                            class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+
+                </form>
+
+
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
                     <li class="nav-item">
-                        <a class="btn nav-link active" aria-current="page" href="#" id="home">Home</a>
+                        <a class="nav-link active px-3" aria-current="page" href="#" id="home">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle px-3" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Categories
                         </a>
@@ -54,27 +65,30 @@
                             <li><a class="dropdown-item" href="#Cosmetics">Cosmetics</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <div class="contact">
-                            <a class="btn nav-link" aria-current="page" href="#Contactuso" id="ContactUs">Contact Us</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link px-6" href="#Contactuso" id="ContactUs">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn nav-link active" aria-current="page" href="/FQA" id="faqLink">FAQ</a>
+                        <a class="nav-link px-3" href="/FQA" id="faqLink">FAQ</a>
                     </li>
                 </ul>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn text-white" id="log">Login</a>
-                <a href="#" class="btn text-white" id="logoutBtn" style="display:none;">Logout</a>
-                <button class="p-3" id="cart" onclick="display()"><i class="fa-solid fa-cart-shopping"></i></button>
 
-                <a class="nav-link" href="#" id="userIcon" style="display:none;">
-                    <div class="icon">
-                        <div class="person">
-                            <i class="fa-regular fa-circle-user  fa-2x"></i>
+                <div class="d-flex align-items-center ms-lg-3 gap-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#login"
+                        class="btn btn-outline-light px-4 rounded-pill" id="log">Login</a>
+                    <a href="#" class="btn btn-danger px-4 rounded-pill" id="logoutBtn" style="display:none;">Logout</a>
+
+                    <a href="#" class="text-white position-relative" id="cart">
+                        <i class="fa-solid fa-cart-shopping fa-lg"></i>
+                    </a>
+
+                    <a class="nav-link p-0 text-white" href="#" id="userIcon" style="display:none;">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-regular fa-circle-user fa-2x"></i>
+                            <span class="name ms-2" id="userName"></span>
                         </div>
-                        <div class="name" id="userName"></div>
-                    </div>
-                </a>
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -85,7 +99,7 @@
         <header class="cart-header">
             <div class="cart-title">
                 <h3>Shopping Cart</h3>
-                <span class="cart-count" id="cartCount" aria-live="polite">0</span>
+                <span class="cart-count" id="cartCount" aria-live="polite"></span>
             </div>
             <div class="cart-controls">
                 <button class="btn btn-clear" onclick="toggleCartWindow()" aria-label="Close cart"><i
@@ -141,52 +155,50 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="justify-content:center;">
-                    <button type="button" onclick="submitx()" class="submit" id="Submitx">Submit</button>
+                    <button type="button" onclick="submitx()" class="submit" id="Submitx">Login</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Profile Modal -->
-   <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <!-- Profile Modal (Drawer) -->
+<div class="modal fade drawer-right" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="profileModalLabel">Edit Profile</h5>
+        <div class="modal-content h-100" style="border-radius: 20px 0 0 20px; overflow: hidden; border: none;">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="modal-title fw-bold fs-5" id="profileModalLabel">Edit Profile</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                <form id="profileForm">
+            <div class="modal-body pt-3">
+                <form id="profileForm" class="d-flex flex-column gap-2">
 
-                    <!-- First Name -->
-                    <div class="mb-3">
-                        <label for="p_firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="p_firstName"
-                            pattern="^[A-Za-z]{3,}$"
-                            title="Only letters, minimum 3 characters" required>
+                    <div>
+                        <label for="p_firstName" class="form-label text-muted small fw-bold">First Name</label>
+                        <input type="text" class="form-control modern-input" id="p_firstName"
+                            style="font-size: 14px;"
+                            pattern="^[A-Za-z]{3,}$" title="Only letters, minimum 3 characters" required>
                     </div>
 
-                    <!-- Last Name -->
-                    <div class="mb-3">
-                        <label for="p_lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="p_lastName"
-                            pattern="^[A-Za-z]{3,}$"
-                            title="Only letters, minimum 3 characters" required>
+                    <div>
+                        <label for="p_lastName" class="form-label text-muted small fw-bold">Last Name</label>
+                        <input type="text" class="form-control modern-input" id="p_lastName"
+                            style="font-size: 14px;"
+                            pattern="^[A-Za-z]{3,}$" title="Only letters, minimum 3 characters" required>
                     </div>
 
-                    <!-- Phone -->
-                    <div class="mb-3">
-                        <label for="p_phone" class="form-label">Phone</label>
-                        <input type="tel" class="form-control" id="p_phone"
+                    <div>
+                        <label for="p_phone" class="form-label text-muted small fw-bold">Phone</label>
+                        <input type="tel" class="form-control modern-input" id="p_phone"
+                             style="font-size: 14px;"
                             pattern="^(010|011|012|015)\d{8}$"
                             title="Valid Egyptian phone number (e.g., 01012345678)" required>
                     </div>
 
-                    <!-- Country -->
-                    <div class="mb-3">
-                        <label for="p_country" class="form-label">City</label>
-                        <select class="form-control" id="p_country" required>
+                    <div>
+                        <label for="p_country" class="form-label text-muted small fw-bold">City</label>
+                        <select class="form-control modern-input" id="p_country" style="font-size: 14px;" required>
                             <option value="">-- Select City --</option>
                             <option value="cairo">Cairo</option>
                             <option value="giza">Giza</option>
@@ -218,16 +230,16 @@
                         </select>
                     </div>
 
-                    <!-- Date of Birth -->
-                    <div class="mb-3">
-                        <label for="p_dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="p_dob" required>
+                    <div>
+                        <label for="p_dob" class="form-label text-muted small fw-bold">Date of Birth</label>
+                        <input type="date" class="form-control modern-input" id="p_dob" style="font-size: 14px;" required>
                     </div>
 
-                    <!-- Password -->
-                    <div class="mb-3">
-                        <label for="p_password" class="form-label">New Password (optional)</label>
-                        <input type="password" class="form-control" id="p_password"
+                    <div>
+                        <label for="p_password" class="form-label text-muted small fw-bold">New Password
+                            (optional)</label>
+                        <input type="password" class="form-control modern-input" id="p_password"
+                            style="font-size: 14px;"
                             pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
                             title="Min 8 chars, uppercase, lowercase, number, special character">
                     </div>
@@ -235,9 +247,12 @@
                 </form>
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+            <div class="modal-footer border-0 flex-column gap-2 pb-4">
+                <button type="button" id="saveProfileBtn" class="btn w-100 py-2 fw-bold rounded-3"
+                    style="background-color: hsl(178, 100%, 38%); color: white; border: none; "
+                    onclick="saveProfile()">Save changes</button>
+                <button type="button" class="btn btn-link text-secondary text-decoration-none"
+                    data-bs-dismiss="modal">Close</button>
             </div>
 
         </div>
@@ -274,11 +289,9 @@
     <div class="landing">
         <div class="text-center text-white" id="textlanding">
             <div class="title">
-                <div>
-                    <h1 id="welcome" style="font-size: 6rem;">Welcome to</h1>
-                </div>
-                <div>
-                    <h1 id="comer" style="font-size: 6rem;">Comercio</h1>
+                <div class="container text-center" style="margin-top: 30px;">
+                    <h1 id="welcome" style="font-size: 6rem; display: inline-block; margin-right: 20px;">Welcome to</h1>
+                    <h1 id="comer" style="font-size: 6rem; display: inline-block;">Comercio</h1>
                 </div>
             </div>
             <h5 style="font-size: 2rem;">Your one-stop shop for everything!</h5>
@@ -321,28 +334,32 @@
         </main>
     </div>
 
+
     <div class="container my-3 py-5" id="stickers">
-        <div class="row my-5">
+        <div class="row">
             <div class="col text-center">
                 <a href="#Clothes" class="categories-item">
-                    <i class="fa-solid fa-shirt fa-5x pb-2"></i>
+                    <div class="icon-wrapper"><i class="fa-solid fa-shirt fa-5x pb-2"></i></div>
                     <h5>Clothes</h5>
                 </a>
             </div>
             <div class="col text-center">
                 <a href="#Electronic" class="categories-item">
-                    <i class="fa-solid fa-mobile-screen-button fa-5x pb-2"></i>
-                    <h5>Electronic</h5>
+                    <div class="icon-wrapper"><i class="fa-solid fa-mobile-screen-button fa-5x pb-2"></i></div>
+                    <h5>Electronics</h5>
                 </a>
             </div>
             <div class="col text-center">
                 <a href="#Cosmetics" class="categories-item">
-                    <i class="fas fa-spa fa-5x pb-2"></i>
-                    <h5>Cosmetics</h5>
+                    <div class="icon-wrapper"><i class="fas fa-spa fa-5x pb-2"></i></div>
+                    <h5>cosmetics</h5>
                 </a>
             </div>
         </div>
     </div>
+
+
+
 
     <div class="container mt-4" id="products_container">
         <!-- Products will be loaded here dynamically -->
@@ -374,7 +391,7 @@
                                 <li><a id="faq" href="/FQA">FAQ</a></li>
                             </ul>
                         </div>
-                    </div>  
+                    </div>
                 </div>
                 <div class="col-4">
                     <h5 class="text-white" id="Contactuso">Contact Us</h5>

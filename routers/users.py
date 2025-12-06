@@ -6,6 +6,13 @@ from sqlalchemy.orm import Session
 import auth
 
 users_router = APIRouter()
+@users_router.get("/check-email")
+def check_email(email: str, db: Session = Depends(database.get_db)):
+    existing_user = db.query(User).filter(User.email == email).first()
+    if existing_user:
+        return {"exists": True}
+    else:
+        return {"exists": False}
 
 @users_router.post("/register-user")
 async def register_user(
@@ -19,6 +26,12 @@ async def register_user(
     country: str = Form(...),
     db: Session = Depends(database.get_db)
 ):
+    existing_user = db.query(User).filter(User.email == email).first()
+    if existing_user:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"success": False, "message": "This email is already registered."}
+        )
     
     new_user = User(
         first_name=first_name,

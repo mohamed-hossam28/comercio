@@ -25,7 +25,7 @@ class PurchaseRequest(BaseModel):
     quantity: int
 
 @products_router.get("/products/grouped", response_model=Dict[str, List[ProductSchema]])
-def get_products(db: Session = Depends(get_db), limit: int = 4):
+def get_products(db: Session = Depends(get_db), limit: int = 20):
     products = db.query(Product).all()
     grouped_data = defaultdict(list)
     for product in products:
@@ -51,3 +51,10 @@ def purchase_product(product_id: int, request: PurchaseRequest, db: Session = De
     
     return {"message": "Purchase successful", "new_stock": product.stock_avilabilty}
 
+
+@products_router.get("/products/search", response_model=List[ProductSchema])
+def search_products(q: str, db: Session = Depends(get_db)):
+    if not q:
+        return []
+    products = db.query(Product).filter(Product.name.ilike(f"%{q}%")).all()
+    return products

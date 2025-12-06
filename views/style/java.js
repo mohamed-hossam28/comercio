@@ -56,7 +56,7 @@ async function loadCategorizedProducts() {
 
                 card.innerHTML = `
                     ${isOutOfStock ? '<div class="sold-out-overlay">Sold Out</div>' : ''}
-                    <img class="product-image" src="${product.image_url}" alt="${product.name}">
+                    <img class="product-image" src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 375px; object-fit: cover;">
                     <div class="product-details">
                         <div class="product-title">${product.name}</div>
                         <div class="product-price">$${product.price.toFixed(2)}</div>
@@ -83,7 +83,7 @@ async function loadCategorizedProducts() {
             carouselContainer.appendChild(scrollContainer);
 
             if (products.length > 3) {
-                // Right Button
+
                 const rightBtn = document.createElement('button');
                 rightBtn.className = 'scroll-btn right';
                 rightBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
@@ -101,22 +101,53 @@ async function loadCategorizedProducts() {
     }
 }
 
+function smoothScrollTo(element, target, duration) {
+    const start = element.scrollLeft;
+    const change = target - start;
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+        const timeElapsed = currentTime - startTime;
+
+
+        if (timeElapsed > duration) {
+            element.scrollLeft = target;
+            return;
+        }
+
+        const progress = timeElapsed / duration;
+        const easeInOutQuad = progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+        element.scrollLeft = start + (change * easeInOutQuad);
+        requestAnimationFrame(animateScroll);
+    }
+
+    requestAnimationFrame(animateScroll);
+}
+
+
 function scrollCarousel(container, direction) {
     const scrollContainer = container.querySelector('.product-scroll-container');
     const card = scrollContainer.querySelector('.product-card');
 
     if (!card) return;
 
-    // Calculate dynamic scroll amount: card width + gap
     const cardWidth = card.offsetWidth;
-    const gap = 20; // Matches CSS gap
+    const gap = 20;
     const scrollAmount = cardWidth + gap;
 
+    let targetPosition;
     if (direction === 'left') {
-        scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        targetPosition = scrollContainer.scrollLeft - scrollAmount;
     } else {
-        scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        targetPosition = scrollContainer.scrollLeft + scrollAmount;
     }
+
+    const duration = 600;
+
+    smoothScrollTo(scrollContainer, targetPosition, duration);
 }
 
 function validateQuantity(input, maxStock) {
@@ -252,10 +283,10 @@ function showAlert(message, type = 'info') {
 function toggleCartWindow() {
     const cartWindow = document.getElementById('cartWindow');
     if (!cartWindow) return;
-    cartWindow.style.display = cartWindow.style.display === 'none' ? 'block' : 'none';
+    cartWindow.classList.toggle('active');
 }
 
-document.getElementById('cart')?.addEventListener('click', toggleCartWindow);
+
 
 
 // ================================
@@ -380,6 +411,7 @@ function showOrderSummary() {
     fetch("/me").then(response => {
         if (!response.ok) {
             showAlert("Please login to checkout.", "warning");
+            document.getElementById('cartWindow').classList.remove('active');
             const loginModal = new bootstrap.Modal(document.getElementById('login'));
             loginModal.show();
             return;
@@ -414,7 +446,7 @@ function showOrderSummary() {
 
         // Close Cart Window
         const cartWindow = document.getElementById('cartWindow');
-        if (cartWindow) cartWindow.style.display = 'none';
+        if (cartWindow) cartWindow.classList.remove('active');
     });
 }
 
@@ -468,10 +500,17 @@ document.getElementById("confirmOrderBtn")?.addEventListener("click", async () =
     }
 });
 
-
 // ================================
 // LOGIN FUNCTION 
 // ================================
+document.addEventListener("keydown", function (event) {
+    const loginModal = document.getElementById('login');
+
+    if (event.key === "Enter" && loginModal && loginModal.classList.contains('show')) {
+        event.preventDefault(); 
+        submitx();
+    }
+});
 async function submitx() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -677,3 +716,143 @@ window.addEventListener("load", () => {
 });
 
 
+
+const cartBtn = document.getElementById('cart');
+if (cartBtn) {
+    cartBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleCartWindow();
+    });
+}
+
+// ================================
+// SEARCH FUNCTIONALITY
+// ================================
+
+async function handleSearch(e) {
+    e.preventDefault();
+    const searchInput = document.getElementById('se');
+    const query = searchInput.value.toLowerCase().trim();
+
+    if (!query) return;
+
+    // Hide homepage content
+    document.querySelector('.landing').style.display = 'none';
+    document.getElementById('stickers').style.display = 'none';
+
+    // Get and clear container
+    const container = document.getElementById('products_container');
+    container.innerHTML = '<div class="text-center mt-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+    try {
+        const response = await fetch(`/products/search?q=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Search failed');
+
+        const results = await response.json();
+        container.innerHTML = '';
+
+        // Add a title for search results
+        const title = document.createElement('h4');
+        title.style.fontFamily = 'Parisienne';
+        title.style.fontSize = '2.5rem';
+        title.style.textAlign = 'center';
+        title.style.marginTop = '0px';
+        title.textContent = `Search Results for "${searchInput.value}"`;
+        container.appendChild(title);
+
+        if (results.length === 0) {
+            container.innerHTML += '<div class="alert alert-info">No products found matching your search.</div>';
+            return;
+        }
+
+        // Create a grid container for results
+        const gridContainer = document.createElement('div');
+        gridContainer.style.display = 'flex';
+        gridContainer.style.flexWrap = 'wrap';
+        gridContainer.style.gap = '20px';
+        gridContainer.style.justifyContent = 'center';
+        gridContainer.style.padding = '20px 0';
+
+        results.forEach(product => {
+            const stockCount = product.stock_avilabilty;
+            const isOutOfStock = stockCount === 0;
+            const lowStock = !isOutOfStock && stockCount < 5;
+            const stockClass = isOutOfStock ? 'out-of-stock' : (lowStock ? 'low-stock' : '');
+            const stockText = isOutOfStock ? 'Sold Out' : `In Stock: ${stockCount}`;
+
+            const card = document.createElement('div');
+            card.className = 'product-card';
+
+            card.innerHTML = `
+                ${isOutOfStock ? '<div class="sold-out-overlay">Sold Out</div>' : ''}
+                <img class="product-image" src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 375px; object-fit: cover;">
+                <div class="product-details">
+                    <div class="product-title">${product.name}</div>
+                    <div class="product-price">$${product.price.toFixed(2)}</div>
+                    <div class="stock-info ${stockClass}">${stockText}</div>
+                    
+                    ${!isOutOfStock ? `
+                    <div class="quantity-control">
+                        <span class="quantity-label">Qty:</span>
+                        <input type="number" class="qty-input" value="1" min="1" max="${stockCount}" 
+                            onchange="validateQuantity(this, ${stockCount})">
+                    </div>
+                    ` : ''}
+
+                    <button class="add-btn" 
+                        ${isOutOfStock ? 'disabled' : ''}
+                        onclick="addToCartWithValidation(this, ${product.id}, '${product.name}', ${product.price}, ${stockCount})">
+                        ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                    </button>
+                </div>
+            `;
+            gridContainer.appendChild(card);
+        });
+
+        container.appendChild(gridContainer);
+
+    } catch (error) {
+        console.error('Search error:', error);
+        container.innerHTML = '<div class="alert alert-danger">An error occurred while searching. Please try again.</div>';
+    }
+}
+
+// Attach listeners
+const searchBtn = document.getElementById('searchbn');
+const searchInput = document.getElementById('se');
+
+if (searchBtn) {
+    searchBtn.addEventListener('click', handleSearch);
+}
+
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleSearch(e);
+        }
+    });
+}
+
+// Home Button & Logo Reset Logic
+function resetToHome(e) {
+    e.preventDefault();
+    // Show homepage content
+    document.querySelector('.landing').style.display = 'block';
+    document.getElementById('stickers').style.display = 'block';
+
+    // Clear search input
+    if (searchInput) searchInput.value = '';
+
+    // Reload default products
+    loadCategorizedProducts();
+}
+
+const homeBtn = document.getElementById('home');
+if (homeBtn) {
+    homeBtn.addEventListener('click', resetToHome);
+}
+
+const logoBtn = document.querySelector('.navbar-brand.logo');
+if (logoBtn) {
+    logoBtn.addEventListener('click', resetToHome);
+}
