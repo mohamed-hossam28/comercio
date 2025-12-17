@@ -4,15 +4,8 @@ from models.users import User
 import database
 from sqlalchemy.orm import Session
 import auth
-
+from controller import hash_password, verify_password
 users_router = APIRouter()
-@users_router.get("/check-email")
-def check_email(email: str, db: Session = Depends(database.get_db)):
-    existing_user = db.query(User).filter(User.email == email).first()
-    if existing_user:
-        return {"exists": True}
-    else:
-        return {"exists": False}
 
 @users_router.post("/register-user")
 async def register_user(
@@ -32,13 +25,13 @@ async def register_user(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"success": False, "message": "This email is already registered."}
         )
-    
+    hashed_password = hash_password(password)
     new_user = User(
         first_name=first_name,
         last_name=last_name,
         dob=dob,
         email=email,
-        password=password,
+        password=hashed_password,
         sex=sex,
         phone=phone,
         country=country
@@ -57,8 +50,8 @@ async def login_user(
     password: str = Form(...),
     db: Session = Depends(database.get_db)
 ):
-    user = db.query(User).filter(User.email == email, User.password == password).first()
-    if user:
+    user = db.query(User).filter(User.email == email).first()
+    if user and verify_password(password, user.password):
         # create a session token and set it in an HTTP-only cookie
         token = auth.create_session(user.id)
         resp = JSONResponse(content={"user_name": user.first_name, "user_id": user.id})
