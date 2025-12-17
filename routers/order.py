@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models.order import OrderDetails, OrderItem
 from models.users import User
+from models.products import Product
 from fastapi.responses import JSONResponse
-from fastapi import status
+from fastapi import status, HTTPException
 import auth
 
 order_router = APIRouter(prefix="/order", tags=["order"])
@@ -38,8 +39,19 @@ def checkout(data: CheckoutRequest, request: Request, db: Session = Depends(get_
 
     total = 0
 
-    # 2. Add order items
+    # 2. Add order items and update stock
     for item in data.items:
+        # Check product stock
+        product = db.query(Product).filter(Product.id == item.product_id).with_for_update().first()
+        if not product:
+             raise HTTPException(status_code=404, detail=f"Product {item.product_name} not found")
+        
+        if product.stock_avilabilty < item.quantity:
+            raise HTTPException(status_code=400, detail=f"Insufficient stock for {product.name}. Available: {product.stock_avilabilty}")
+
+        # Deduct stock
+        product.stock_avilabilty -= item.quantity
+
         order_item = OrderItem(
             order_details_id=new_order_detail.id,
             product_name=item.product_name,

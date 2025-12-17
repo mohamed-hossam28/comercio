@@ -172,57 +172,13 @@ async function addToCartWithValidation(btn, id, name, price, maxStock) {
         return;
     }
 
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/products/${id}/purchase`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ quantity: quantity })
-        });
+    // Client-side only validation (removed backend immediate purchase)
+    addToCart(id, name, price, quantity);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Purchase failed');
-        }
-
-        const result = await response.json();
-        const newStock = result.new_stock;
-
-        // Update UI
-        const stockInfo = card.querySelector('.stock-info');
-        if (newStock === 0) {
-            stockInfo.textContent = 'Sold Out';
-            stockInfo.className = 'stock-info out-of-stock';
-            btn.disabled = true;
-            btn.textContent = 'Sold Out';
-            card.querySelector('.quantity-control').style.display = 'none';
-
-            // Add overlay
-            const productCard = card.closest('.product-card');
-            if (!productCard.querySelector('.sold-out-overlay')) {
-                const overlay = document.createElement('div');
-                overlay.className = 'sold-out-overlay';
-                overlay.textContent = 'Sold Out';
-                productCard.insertBefore(overlay, productCard.firstChild);
-            }
-        } else {
-            stockInfo.textContent = `In Stock: ${newStock}`;
-            if (newStock < 5) {
-                stockInfo.className = 'stock-info low-stock';
-            }
-            // Update max attribute for input
-            qtyInput.max = newStock;
-            // Update onclick handler with new maxStock
-            btn.setAttribute('onclick', `addToCartWithValidation(this, ${id}, '${name}', ${price}, ${newStock})`);
-        }
-
-        addToCart(id, name, price, quantity);
-
-    } catch (error) {
-        console.error('Purchase error:', error);
-        showAlert(error.message, "error");
-    }
+    // Optional: Visually update the UI to reflect "reserved" stock if desired, 
+    // but for now we keep the page stock static until refresh or simply trust the cart logic.
+    // To be safe, we can reset input to 1.
+    qtyInput.value = 1;
 }
 
 // ================================
@@ -490,6 +446,9 @@ document.getElementById("confirmOrderBtn")?.addEventListener("click", async () =
             document.getElementById('cartItems').innerHTML = "";
             document.getElementById('cartTotal').textContent = "$0.00";
             localStorage.removeItem("cart");
+
+            // Refresh products to show updated stock
+            loadCategorizedProducts();
         } else {
             showAlert("Checkout failed: " + (result.message || JSON.stringify(result.detail)), "error");
         }
@@ -507,7 +466,7 @@ document.addEventListener("keydown", function (event) {
     const loginModal = document.getElementById('login');
 
     if (event.key === "Enter" && loginModal && loginModal.classList.contains('show')) {
-        event.preventDefault(); 
+        event.preventDefault();
         submitx();
     }
 });

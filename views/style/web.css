@@ -4,11 +4,13 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 #saveProfileBtn:hover {
     color: hsl(178, 68%, 25%);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(72, 202, 228, 0.4);
 }
+
 .header {
     background-size: cover;
     background-position: center;
@@ -812,6 +814,7 @@ input[type="password"] {
     transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .product-card:hover {
@@ -889,7 +892,7 @@ input[type="password"] {
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition:0.3s;
+    transition: 0.3s;
 }
 
 .add-btn:hover {
