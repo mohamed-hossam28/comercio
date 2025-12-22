@@ -59,7 +59,27 @@ async function loadCategorizedProducts() {
                     <img class="product-image" src="${product.image_url}" alt="${product.name}" style="width: 100%; height: 375px; object-fit: cover;">
                     <div class="product-details">
                         <div class="product-title">${product.name}</div>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                
+                       <div class="product-price">
+  ${
+    product.price > 800
+      ? `
+        <span style="text-decoration: line-through; margin-right: 10px; color:#999;">
+          $${(product.price + 500).toFixed(2)}
+        </span>
+        <span style="font-weight: bold; font-size: 18px;">
+          $${product.price.toFixed(2)}
+        </span>
+      `
+      : `
+        <span style="font-weight: bold; font-size: 18px;">
+          $${product.price.toFixed(2)}
+        </span>
+      `
+  }
+</div>
+
+        
                         <div class="stock-info ${stockClass}">${stockText}</div>
                         
                         ${!isOutOfStock ? `
